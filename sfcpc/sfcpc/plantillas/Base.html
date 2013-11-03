@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">   
+
+     <title>{% block titulo %}{% endblock titulo %}</title>
+     <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.min.css">
+     <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.rensponsive.min.css">
+</head>
+<body style="background-image:url('{{STATIC_URL}}img/background.jpg');">
+	<meta charset="utf-8">  
+<div class="containter" style="margin-left:30px; margin-top:20px" >
+          <h3>Sistema de facturacion y cuentas por cobrar</h3>
+        
+        	<ul class="nav nav-tabs">
+  				<li class="{%block FacturacionActivo%}{%endblock FacturacionActivo%}">
+    				<a href="/">Facturacion</a>
+  				</li>
+  				<li class="{%block ClientesActivo%}{%endblock ClientesActivo%}">
+            <a href="#">Clientes</a></li>
+  				<li class="{%block PSActivo%}{%endblock PSActivo%}">
+            <a href="#">Productos y Servicios</a></li>
+            <li class="{%block PagosActivo%}{%endblock PagosActivo%}">
+            <a href="#">Pagos</a></li>
+            <li class="{%block ReportesActivo%}{%endblock ReportesActivo%}">
+            <a href="#">Reportes</a></li>
+
+		</ul>
+        {% block contenido %}{% endblock contenido %}
+</div>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}js/bootstrap.min.js">
+</script>
+</body>
+</html>
