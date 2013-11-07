@@ -38,6 +38,9 @@ class Clientes(models.Model):
 	CP = models.IntegerField()
 	Estado_Ciudad = models.ForeignKey(Estado_Ciudad)
 	Fisico_Moral = models.CharField(max_length = 1)
+	Cliente_Moroso = models.BooleanField()
+	Limite_Credito = models.DecimalField(max_digits = 8, decimal_places = 2)
+
 	class Meta:
 		unique_together = ('RFC','Calle')
 
@@ -53,12 +56,24 @@ class Factura(models.Model):
                 ('P','Pagada'),
         )
 	Status = models.CharField(max_length=1,choices=Tipo_Factura)
+	Pesos_Dolares = (
+                ('D','Dolar'),
+                ('P','Peso'),
+        )
+	Tipo_Cambio = models.CharField(max_length=1,choices=Pesos_Dolares)
+	
 
 class Pagos(models.Model):
 	Clave_Pagos = models.AutoField(primary_key = True)
 	Numero_Factura = models.ForeignKey(Factura)
 	Fecha = models.DateTimeField()
 	Pago = models.DecimalField(max_digits = 8, decimal_places = 2)
+	Pesos_Dolares = (
+                ('D','Dolar'),
+                ('P','Peso'),
+        )
+	Tipo_Cambio = models.CharField(max_length=1,choices=Pesos_Dolares)
+
 	class Meta:
 		unique_together = ('Numero_Factura','Fecha')
 
