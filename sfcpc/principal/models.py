@@ -37,10 +37,19 @@ class Clientes(models.Model):
 	Numero_exterior = models.IntegerField()
 	CP = models.IntegerField()
 	Estado_Ciudad = models.ForeignKey(Estado_Ciudad)
-	Fisico_Moral = models.CharField(max_length = 1)
+	Tipo_Cliente = (
+                ('F','Fisico'),
+                ('M','Moral'),
+        )
+	Fisico_Moral = models.CharField(max_length = 1, choices = Tipo_Cliente)
 	Cliente_Moroso = models.BooleanField()
-	Limite_Credito = models.DecimalField(max_digits = 8, decimal_places = 2)
-
+	Tipo_Credito = (
+                ('15','15 dias'),
+                ('30','30 dias'),
+                ('60','60 dias')
+        )
+	Limite_Credito = models.CharField(max_length = 1, choices = Tipo_Credito)
+	
 	class Meta:
 		unique_together = ('RFC','Calle')
 

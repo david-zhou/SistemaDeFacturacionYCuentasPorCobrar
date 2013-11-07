@@ -1,0 +1,29 @@
+{% extends "Base.html" %}
+
+{% block titulo %} Productos  {% endblock titulo %}
+{%block PSActivo%}active{%endblock PSActivo%}
+{% block contenido %}
+<div class="containter" style="margin-left:30px; margin-top:20px" >
+           <h6 style ="font-family:  'Hoefler Text', Georgia, 'Times New Roman', serif;
+                    font-weight: normal;
+                    font-size: 1.4em;
+                    letter-spacing: .2em;
+                    line-height: 1.1em;
+                    margin:0px;
+                    text-align: left;
+                    ">
+          Productos y Servicios </h6>
+        
+          <ul class="nav nav-tabs">
+          <li class="{%block Altas%}{%endblock Altas%}">
+            <a href="/Productos_Alta">Altas</a>
+          </li>
+          <li class="{%block Bajas%}{%endblock Bajas%}">
+            <a href="#">Bajas</a></li>
+          <li class="{%block Cambios%}{%endblock Cambios%}">
+            <a href="#">Cambios</a></li>
+
+    </ul>
+</div>
+{% block contenidoProductos %}{% endblock contenidoProductos %}
+{% endblock contenido %}

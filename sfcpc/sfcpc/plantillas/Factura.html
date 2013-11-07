@@ -1,0 +1,41 @@
+{% extends "Base.html" %}
+{% block titulo %} Factura  {% endblock titulo %}
+{%block FacturacionActivo%}active{%endblock FacturacionActivo%}
+{% block contenido %}
+<div class="containter" style="margin-left:30px; margin-top:20px" >
+          <h6 style ="font-family:  'Hoefler Text', Georgia, 'Times New Roman', serif;
+                    font-weight: normal;
+                    font-size: 1.4em;
+                    letter-spacing: .2em;
+                    line-height: 1.1em;
+                    margin:0px;
+                    text-align: left;
+                    ">
+          Facturar</h6>
+  Cliente: <br><input type="text" name="Cliente"><br>
+  Fecha: <br><input type="date" name="lname"><br>
+  <table class = "table table-striped">
+	<thead>
+		<tr>
+			<th>Nombre</th>
+			<th>Cantidad</th>
+			<th>Precio</th>
+			<th>Total</th>
+			<th></th>
+		</tr>
+	</thead>
+<tbody>
+</tbody>
+</table>
+
+<a href = "#" class ="btn btn-info"> Agregar Producto</a>
+<div  style="float: right; margin-right:190px" >
+  Subtotal: <input type="text" name="Subtotal"><br>
+  Pago: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="Pago"><br>
+ </div>
+<br>
+<br>
+<input type="submit" value = "Generar Factura" class="btn btn-primary">
+
+ </div>
+{% endblock contenido %}

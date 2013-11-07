@@ -1,0 +1,28 @@
+{% extends "Base.html" %}
+
+{% block titulo %} Pagos  {% endblock titulo %}
+{%block PagosActivo%}active{%endblock PagosActivo%}
+{% block contenido %}
+<div class="containter" style="margin-left:30px; margin-top:20px" >
+
+           <h6 style ="font-family:  'Hoefler Text', Georgia, 'Times New Roman', serif;
+                    font-weight: normal;
+                    font-size: 1.4em;
+                    letter-spacing: .2em;
+                    line-height: 1.1em;
+                    margin:0px;
+                    text-align: left;
+                    ">
+          Pagos </h6>
+        
+          <ul class="nav nav-tabs">
+          <li class="{%block PagoFactura%}{%endblock PagoFactura%}">
+            <a href="/Pagos_Factura">Factura</a>
+          </li>
+          <li class="{%block PagoCliente%}{%endblock PagoCliente%}">
+            <a href="/Pagos_Cliente">Cliente</a></li>
+    </ul>
+ </div>
+ {% block contenidoPagos %}
+{% endblock contenidoPagos %}
+{% endblock contenido %}

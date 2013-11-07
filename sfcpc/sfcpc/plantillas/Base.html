@@ -7,11 +7,10 @@
      <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.min.css">
      <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/bootstrap.rensponsive.min.css">
 </head>
-<body style="ackground-attacchment: fixed; background-size: cover;
+<body style="background-attacchment: fixed; background-size: cover;
   background-image:url('{{STATIC_URL}}img/white-background.jpg');
   background-repeat: no-repeat;
-  background-position: left top;">
-	<meta charset="utf-8">  
+  background-position: left top;"> 
 <div class="containter" style="margin-left:30px; margin-top:20px" >
 
           <h3 style ="font-family:  'Hoefler Text', Georgia, 'Times New Roman', serif;
@@ -26,16 +25,19 @@
         
         	<ul class="nav nav-tabs">
   				<li class="{%block FacturacionActivo%}{%endblock FacturacionActivo%}">
-    				<a href="/">Facturacion</a>
+    				<a href="/Factura">Facturacion</a>
   				</li>
   				<li class="{%block ClientesActivo%}{%endblock ClientesActivo%}">
-            <a href="#">Clientes</a></li>
+            <a href="/Clientes">Clientes</a></li>
   				<li class="{%block PSActivo%}{%endblock PSActivo%}">
-            <a href="#">Productos y Servicios</a></li>
+            <a href="/Productos">Productos y Servicios</a></li>
+
             <li class="{%block PagosActivo%}{%endblock PagosActivo%}">
-            <a href="#">Pagos</a></li>
+            <a href="/Pagos">Pagos</a>
             <li class="{%block ReportesActivo%}{%endblock ReportesActivo%}">
-            <a href="#">Reportes</a></li>
+            <a href="#">Reportes</a>
+            </div>
+          </li>
 
 		</ul>
         {% block contenido %}{% endblock contenido %}

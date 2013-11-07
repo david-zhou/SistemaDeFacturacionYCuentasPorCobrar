@@ -6,6 +6,12 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
 	url(r'^$','principal.views.index'),
+	url(r'^Factura/$','principal.views.Factura'),
+    url(r'^Clientes/$', 'principal.views.Clientes'),
+    url(r'^Pagos/$', 'principal.views.Pagos'),
+    url(r'^Productos/$', 'principal.views.Productos'),
+    url(r'^Clientes_Alta/$', 'principal.views.Clientes_Alta'),
+    url(r'^Productos_Alta/$', 'principal.views.Productos_Alta'),
     # Examples:
     # url(r'^$', 'sfcpc.views.home', name='home'),
     # url(r'^sfcpc/', include('sfcpc.foo.urls')),
