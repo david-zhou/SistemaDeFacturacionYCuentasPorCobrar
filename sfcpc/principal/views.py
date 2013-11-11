@@ -43,3 +43,9 @@ def Productos_Alta(request):
 	else:
 		formulario = ProductosForm()
 	return render_to_response("Productos_Alta.html", {"formulario":formulario} , context_instance = RequestContext(request))
+
+def Pagos_Factura(request):
+	return render_to_response("Pagos_Factura.html" , context_instance = RequestContext(request))
+
+def Pagos_Clientes(request):
+	return render_to_response("Pagos_Clientes.html" , context_instance = RequestContext(request))

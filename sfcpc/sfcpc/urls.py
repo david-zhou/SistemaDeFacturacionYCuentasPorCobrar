@@ -12,6 +12,8 @@ urlpatterns = patterns('',
     url(r'^Productos/$', 'principal.views.Productos'),
     url(r'^Clientes_Alta/$', 'principal.views.Clientes_Alta'),
     url(r'^Productos_Alta/$', 'principal.views.Productos_Alta'),
+    url(r'^Pagos_Factura/$', 'principal.views.Pagos_Factura'),
+    url(r'^Pagos_Clientes/$', 'principal.views.Pagos_Clientes'),
     # Examples:
     # url(r'^$', 'sfcpc.views.home', name='home'),
     # url(r'^sfcpc/', include('sfcpc.foo.urls')),

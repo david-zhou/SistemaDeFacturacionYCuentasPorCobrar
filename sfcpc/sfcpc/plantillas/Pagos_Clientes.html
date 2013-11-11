@@ -1,0 +1,27 @@
+{% extends "Pagos.html" %}
+
+{% block titulo %} Pago Cliente  {% endblock titulo %}
+{%block PagoCliente%}active{%endblock PagoCliente%}
+{% block contenidoPagos %}
+<div class="containter" style="margin-left:30px; margin-top:20px" >
+
+  RFC: <br><input type="text" name="RFC"><br>
+  Facturas a pagar:<br>
+    <table class = "table table-striped">
+	<thead>
+		<tr>
+			<th>Numero de Factura</th>
+			<th>Fecha generada</th>
+			<th>Fecha limite</th>
+			<th>Abonos</th>
+			<th>Deudas</th>
+			<th>Total de la factura</th>
+			<th></th>
+		</tr>
+	</thead>
+<tbody>
+</tbody>
+</table>
+  <input type="submit" value = "Seleccionar" class="btn btn-primary">
+</div>
+{% endblock contenidoPagos %}

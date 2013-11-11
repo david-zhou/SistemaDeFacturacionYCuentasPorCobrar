@@ -1,0 +1,13 @@
+{% extends "Pagos.html" %}
+
+{% block titulo %} Pago Factura  {% endblock titulo %}
+{%block PagoFactura%}active{%endblock PagoFactura%}
+{% block contenidoPagos %}
+<div class="containter" style="margin-left:30px; margin-top:20px" >
+
+  Numero de Factura: <br><input type="text" name="Numero_Factura"><br>
+  Fecha: <br><input type="date" name="Fecha"><br>
+  Monto a pagar: <br><input type="text" name="Numero_Factura"><br>
+  <input type="submit" value = "Pagar" class="btn btn-primary">
+</div>
+{% endblock contenidoPagos %}
