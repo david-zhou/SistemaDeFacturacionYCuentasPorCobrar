@@ -8,6 +8,25 @@
 	{{ formulario.as_p }}
 	<input type="submit" value = "Agregar" class="btn btn-primary">
 	<a href = "/Clientes_Alta" class ="btn"> Regresar</a>
+<a data-toggle="modal" href="#example" class="btn btn-info">Agregar Estado o Ciudad</a>
+		<div>  
+    <div id="example" class="modal hide fade in" style="display: none; ">  
+    <div class="modal-header">  
+    <a class="close" data-dismiss="modal">×</a>  
+  <h3>Agregar Estado o Ciudad</h3>  
+</div>  
+<div class="modal-body">  
+  Estado:<br><input type="text" name="Estado"><br>
+  Ciudad:<br><input type="text" name="Ciudad"><br>
+   <table class = "table table-striped"> 
+</div>  
+<div class="modal-footer">  
+  <a href="#" class="btn btn-success" data-dismiss="alert">Agregar</a>  
+  <a href="#" class="btn" data-dismiss="modal">Cerrar</a>  
+</div>  
+</div>
+</div>
 </form>
- </div>
+
+
 {% endblock contenidoClientes %}

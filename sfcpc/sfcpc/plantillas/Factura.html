@@ -29,7 +29,39 @@
 </tbody>
 </table>
 
-<a href = "#" class ="btn btn-info"> Agregar Producto</a>
+
+
+<div>  
+    <div id="example" class="modal hide fade in" style="display: none; ">  
+    <div class="modal-header">  
+    <a class="close" data-dismiss="modal">×</a>  
+  <h3>Seleccionar Producto</h3>  
+</div>  
+<div class="modal-body">  
+  Clave del producto:<br><input type="text" name="Producto"><br>
+  Nombre del producto:<br><input type="text" name="Nombre"><br>
+   <table class = "table table-striped">
+  <thead>
+    <tr>
+      <th>Clave</th>
+      <th>Nombre</th>
+      <th>Descripcion</th>
+      <th>Precio</th>
+      <th></th>
+    </tr>
+  </thead>
+<tbody>
+</tbody>
+</table>               
+</div>  
+<div class="modal-footer">  
+  <a href="#" class="btn btn-success" data-dismiss="alert">Seleccionar Producto</a>  
+  <a href="#" class="btn" data-dismiss="modal">Cerrar</a>  
+</div>  
+</div>  
+  <a data-toggle="modal" href="#example" class="btn btn-info">Agregar Producto</a>
+</div>
+
 <div  style="float: right; margin-right:190px" >
   Subtotal: <input type="text" name="Subtotal"><br>
   Pago: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="Pago"><br>

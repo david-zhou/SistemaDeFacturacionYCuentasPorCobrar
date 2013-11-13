@@ -1,0 +1,13 @@
+{% extends "Productos.html" %}
+
+{% block titulo %} Cambio de Productos  {% endblock titulo %}
+{%block Cambios%}active{%endblock Cambios%}
+{% block contenidoProductos %}
+<div class="containter" style="margin-left:30px; margin-top:20px" >
+  <form method = "post"> {% csrf_token %}
+	{{ formulario.as_p }}
+	<input type="submit" value = "Aceptar Cambio" class="btn btn-info">
+	<a href = "/Productos_Cambio" class ="btn"> Regresar</a>
+</form>
+ </div>
+{% endblock contenidoProductos %}

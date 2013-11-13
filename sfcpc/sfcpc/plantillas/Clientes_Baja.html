@@ -1,0 +1,13 @@
+{% extends "Clientes.html" %}
+
+{% block titulo %} Baja de Cliente  {% endblock titulo %}
+{%block Bajas%}active{%endblock Bajas%}
+{% block contenidoClientes %}
+<div class="containter" style="margin-left:30px; margin-top:20px" >
+  <form method = "post"> {% csrf_token %}
+	{{ formulario.as_p }}
+	<input type="submit" value = "Borrar" class="btn btn-danger">
+	<a href = "/Clientes_Baja" class ="btn"> Regresar</a>
+</form>
+ </div>
+{% endblock contenidoClientes %}
