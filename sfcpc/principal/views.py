@@ -4,10 +4,14 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from principal.models import Factura
 from principal.forms import FacturaForm
-from principal.models import Clientes
 from principal.forms import ClientesForm
 from principal.models import Producto
 from principal.forms import ProductosForm
+from principal.models import Dolar_peso
+from principal.models import Detalle_Factura
+from principal.models import Pagos
+from principal.models import Estado_Ciudad
+from principal.models import Clientes
 
 def index(request):
 	return render_to_response("index.html" , context_instance = RequestContext(request))
@@ -38,15 +42,27 @@ def Clientes_Baja(request):
 		formulario = ClientesForm()
 	return render_to_response("Clientes_Baja.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
-def Clientes_Cambio(request):
+def Seleccionar_Cliente(request,Nombre_Cliente,RFC_Cliente):
+	productos = Clientes.objects.all()
+	#if Nombre_Cliente == "":
+	#	Cliente = Clientes.objects.filter(RFC = RFC_Cliente)
+	#elif RFC_Cliente == "":
+	#	Cliente = Clientes.objects.filter(Nombres = Nombre_Cliente)
+	#else:
+	#	Cliente = Clientes.objects.filter(RFC = RFC_Cliente).filter(Nombres = Nombre_Cliente)
+	return render_to_response("Seleccionar_Cliente.html" ,{"productos":productos}, context_instance = RequestContext(request))
+
+
+def Clientes_Cambio(request, id_Cliente):
+	Cliente = Clientes.objects.get(pk = id_Cliente)
 	if request.method == "POST":
-		formulario = ClientesForm(request.POST)
+		formulario = ClientesForm(request.POST, instance = Cliente)
 		if formulario.is_valid():
 			formulario.save()
 			return HttpResponseRedirect("/Clientes_Cambio")
 	else:
-		formulario = ClientesForm()
-	return render_to_response("Clientes_Cambio.html", {"formulario":formulario} , context_instance = RequestContext(request))
+		formulario = ProductoForm(instance=Cliente)
+	return render_to_response("Clientes_Cambio.html", {"formulario":formulario}, context_instance = RequestContext(request))
 
 def Pagos(request):
 	return render_to_response("Pagos.html" , context_instance = RequestContext(request))

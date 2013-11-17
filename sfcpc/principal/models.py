@@ -1,5 +1,8 @@
 from django.db import models
 
+data_types_suffix = {
+       'AutoField':                    'autoincrement',
+}
 # Create your models here.
 class Producto(models.Model):
 	Clave_Producto = models.CharField(primary_key = True, max_length = 12)
