@@ -1,11 +1,8 @@
 from django.db import models
 
-data_types_suffix = {
-       'AutoField':                    'autoincrement',
-}
 # Create your models here.
 class Producto(models.Model):
-	Clave_Producto = models.CharField(primary_key = True, max_length = 12)
+	Clave_Producto = models.CharField(primary_key = True, max_length=12)
 	Tipo_PS = (
                 ('P','Producto'),
                 ('S','Servicio'),
@@ -13,7 +10,7 @@ class Producto(models.Model):
 	Tipo=models.CharField(max_length=1,choices=Tipo_PS)
 	Nombre = models.CharField(max_length = 50)
 	Unidad_de_medida = models.CharField(max_length = 10)
-	Descripcion = models.CharField(max_length = 50)
+	Descripcion = models.CharField(max_length = 50, blank=True)
 	Precio = models.DecimalField(max_digits = 8, decimal_places = 2)
 	Activo = models.BooleanField()
 
@@ -38,12 +35,12 @@ class Clientes(models.Model):
         )
 	Fisico_Moral = models.CharField(max_length = 1, choices = Tipo_Cliente)
 	Nombres = models.CharField(max_length = 50)
-	Apellidos = models.CharField(max_length = 50)
+	Apellidos = models.CharField(max_length = 50, blank=True)
 	Calle = models.CharField(max_length = 50) 
-	Numero_interior = models.IntegerField()
+	Numero_interior = models.IntegerField(blank=True)
 	Numero_exterior = models.IntegerField()
-	Colonia = models.CharField(max_length = 50)
-	CP = models.IntegerField()
+	Colonia = models.CharField(max_length = 50, blank=True)
+	CP = models.IntegerField(blank=True)
 	Estado_Ciudad = models.ForeignKey(Estado_Ciudad)
 	Cliente_Moroso = models.BooleanField()
 	Tipo_Credito = (
@@ -51,7 +48,7 @@ class Clientes(models.Model):
                 ('30','30 dias'),
                 ('60','60 dias')
         )
-	Limite_Credito = models.CharField(max_length = 1, choices = Tipo_Credito)
+	Limite_Credito = models.CharField(max_length = 2, choices = Tipo_Credito)
 	
 	class Meta:
 		unique_together = ('RFC','Calle')
