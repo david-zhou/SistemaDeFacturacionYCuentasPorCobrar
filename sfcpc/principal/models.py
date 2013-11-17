@@ -2,17 +2,17 @@ from django.db import models
 
 # Create your models here.
 class Producto(models.Model):
-	Nombre = models.CharField(max_length = 50)
 	Clave_Producto = models.CharField(primary_key = True, max_length = 12)
-	Unidad_de_medida = models.CharField(max_length = 10)
-	Descripcion = models.CharField(max_length = 50)
-	Precio = models.DecimalField(max_digits = 8, decimal_places = 2)
-	Activo = models.BooleanField()
 	Tipo_PS = (
                 ('P','Producto'),
                 ('S','Servicio'),
         )
 	Tipo=models.CharField(max_length=1,choices=Tipo_PS)
+	Nombre = models.CharField(max_length = 50)
+	Unidad_de_medida = models.CharField(max_length = 10)
+	Descripcion = models.CharField(max_length = 50)
+	Precio = models.DecimalField(max_digits = 8, decimal_places = 2)
+	Activo = models.BooleanField()
 
 
 class Dolar_peso(models.Model):
@@ -28,20 +28,20 @@ class Estado_Ciudad(models.Model):
 
 class Clientes(models.Model):
 	Clave_Cliente = models.AutoField(primary_key = True)
-	Nombres = models.CharField(max_length = 50)
-	Apellidos = models.CharField(max_length = 50)
 	RFC = models.CharField(max_length = 13)
-	Calle = models.CharField(max_length = 50) 
-	Numero_interior = models.IntegerField()
-	Colonia = models.CharField(max_length = 50)
-	Numero_exterior = models.IntegerField()
-	CP = models.IntegerField()
-	Estado_Ciudad = models.ForeignKey(Estado_Ciudad)
 	Tipo_Cliente = (
                 ('F','Fisico'),
                 ('M','Moral'),
         )
 	Fisico_Moral = models.CharField(max_length = 1, choices = Tipo_Cliente)
+	Nombres = models.CharField(max_length = 50)
+	Apellidos = models.CharField(max_length = 50)
+	Calle = models.CharField(max_length = 50) 
+	Numero_interior = models.IntegerField()
+	Numero_exterior = models.IntegerField()
+	Colonia = models.CharField(max_length = 50)
+	CP = models.IntegerField()
+	Estado_Ciudad = models.ForeignKey(Estado_Ciudad)
 	Cliente_Moroso = models.BooleanField()
 	Tipo_Credito = (
                 ('15','15 dias'),
