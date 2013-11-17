@@ -15,9 +15,6 @@ from principal.forms import Estado_CiudadForm
 from principal.models import Clientes
 
 def v_index(request):
-return render_to_response("index.html" , context_instance = RequestContext(request)
-
-def index(request):
 	return render_to_response("index.html" , context_instance = RequestContext(request))
 
 def v_Factura(request):
