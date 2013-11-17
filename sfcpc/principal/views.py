@@ -15,8 +15,11 @@ from principal.forms import Estado_CiudadForm
 from principal.models import Clientes
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 def v_index(request):
 =======
+=======
+>>>>>>> d4a64808a65e5145448c73c0cf6537602c1908ff
 
 def index(request):
 >>>>>>> d4a64808a65e5145448c73c0cf6537602c1908ff
@@ -29,8 +32,11 @@ def v_Clientes(request):
 		return render_to_response("Clientes.html" , context_instance = RequestContext(request))
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 def v_Clientes_Alta(request):
 =======
+=======
+>>>>>>> d4a64808a65e5145448c73c0cf6537602c1908ff
 def Agregar_Estado_Ciudad(request):
 	if request.method == "POST":
 		formulario = Estado_CiudadForm(request.POST)

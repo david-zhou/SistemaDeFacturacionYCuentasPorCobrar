@@ -37,6 +37,9 @@ urlpatterns = patterns('',
     url(r'^Pagos_Factura/$', 'principal.views.Pagos_Factura'),
     url(r'^Pagos_Clientes/$', 'principal.views.Pagos_Clientes'),
     url(r'^Agregar_Estado_Ciudad/$', 'principal.views.Agregar_Estado_Ciudad'),
+<<<<<<< HEAD
+>>>>>>> d4a64808a65e5145448c73c0cf6537602c1908ff
+=======
 >>>>>>> d4a64808a65e5145448c73c0cf6537602c1908ff
     # Examples:
     # url(r'^$', 'sfcpc.views.home', name='home'),
