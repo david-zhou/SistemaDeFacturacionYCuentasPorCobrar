@@ -11,9 +11,15 @@ from principal.models import Dolar_peso
 from principal.models import Detalle_Factura
 from principal.models import Pagos
 from principal.models import Estado_Ciudad
+from principal.forms import Estado_CiudadForm
 from principal.models import Clientes
 
+<<<<<<< HEAD
 def v_index(request):
+=======
+
+def index(request):
+>>>>>>> d4a64808a65e5145448c73c0cf6537602c1908ff
 	return render_to_response("index.html" , context_instance = RequestContext(request))
 
 def v_Factura(request):
@@ -22,7 +28,23 @@ def v_Factura(request):
 def v_Clientes(request):
 		return render_to_response("Clientes.html" , context_instance = RequestContext(request))
 
+<<<<<<< HEAD
 def v_Clientes_Alta(request):
+=======
+def Agregar_Estado_Ciudad(request):
+	if request.method == "POST":
+		formulario = Estado_CiudadForm(request.POST)
+		if formulario.is_valid():
+			formulario.save()
+			return HttpResponseRedirect("/Agregar_Estado_Ciudad")
+	else:
+		formulario = Estado_CiudadForm()
+
+	return render_to_response("Agregar_Estado_Ciudad.html", {"formulario":formulario}, context_instance=RequestContext(request))
+
+
+def Clientes_Alta(request):
+>>>>>>> d4a64808a65e5145448c73c0cf6537602c1908ff
 	if request.method == "POST":
 		formulario = ClientesForm(request.POST)
 		if formulario.is_valid():
