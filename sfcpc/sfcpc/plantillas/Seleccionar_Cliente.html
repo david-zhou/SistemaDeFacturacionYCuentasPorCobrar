@@ -3,9 +3,9 @@
 {%block Cambios%}active{%endblock Cambios%}
 {% block contenidoClientes %}
 <div class="containter" style="margin-left:30px; margin-top:20px" >
-  Nombre:<br><input type="text" name="Nombre"><br>
+  Nombre:<br><input type="text" name="Nombre" id="nom"><br>
   Apellido:<br><input type="text" name="Apellido"><br>
-  RFC:<br><input type="text" name="RFC"><br>
+  RFC:<br><input type="text" name="RFC" id="RFC"><br>
    <table class = "table table-striped">
   <thead>
     <tr>
@@ -14,11 +14,34 @@
       <th>Apellido</th>
       <th>Estado-Ciudad</th>
       <th>Calle</th>
-      <th><a href ="/Clientes_Cambios/{{Cliente.id}}" class="btn btn-success">Seleccionar</a></th>
+      <th></th>
     </tr>
   </thead>
 <tbody>
+    {% for ClienteFiltrado in Clientes %}
+    <tr>
+      <td> {{ ClienteFiltrado.RFC }} </td>
+      <td> {{ ClienteFiltrado.Nombre }} </td>
+      <td> {{ ClienteFiltrado.Estado_Ciudad }} </td>
+      <td> {{ ClienteFiltrado.Calle }} </td>
+      <td> <a href ="/Clientes_Cambios/{{ClienteFiltrado.id}}" class="btn btn-success">Seleccionar</a></td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan = "5"> No se encuentran clientes. </td>
+    </tr>
+  {% endfor %}
 </tbody>
 </table>    
-</div>           
+<a class="btn btn-primary" onClick="link()">Buscar Cliente</a>
+</div>
+<script type="text/javascript">
+function link()
+{
+  var nombre=document.getElementById('nom').value;
+  var rfc = document.getElementById('RFC').value;
+  window.location.href=nombre+'+'+rfc;
+
+}
+</script>           
 {% endblock contenidoClientes %}

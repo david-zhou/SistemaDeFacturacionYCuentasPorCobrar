@@ -13,16 +13,16 @@ from principal.models import Pagos
 from principal.models import Estado_Ciudad
 from principal.models import Clientes
 
-def index(request):
+def v_index(request):
 	return render_to_response("index.html" , context_instance = RequestContext(request))
 
-def Factura(request):
+def v_Factura(request):
 	return render_to_response("Factura.html" , context_instance = RequestContext(request))
 
-def Clientes(request):
+def v_Clientes(request):
 		return render_to_response("Clientes.html" , context_instance = RequestContext(request))
 
-def Clientes_Alta(request):
+def v_Clientes_Alta(request):
 	if request.method == "POST":
 		formulario = ClientesForm(request.POST)
 		if formulario.is_valid():
@@ -32,7 +32,7 @@ def Clientes_Alta(request):
 		formulario = ClientesForm()
 	return render_to_response("Clientes_Alta.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
-def Clientes_Baja(request):
+def v_Clientes_Baja(request):
 	if request.method == "POST":
 		formulario = ClientesForm(request.POST)
 		if formulario.is_valid():
@@ -42,18 +42,17 @@ def Clientes_Baja(request):
 		formulario = ClientesForm()
 	return render_to_response("Clientes_Baja.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
-def Seleccionar_Cliente(request,Nombre_Cliente,RFC_Cliente):
-	productos = Clientes.objects.all()
-	#if Nombre_Cliente == "":
-	#	Cliente = Clientes.objects.filter(RFC = RFC_Cliente)
-	#elif RFC_Cliente == "":
-	#	Cliente = Clientes.objects.filter(Nombres = Nombre_Cliente)
-	#else:
-	#	Cliente = Clientes.objects.filter(RFC = RFC_Cliente).filter(Nombres = Nombre_Cliente)
-	return render_to_response("Seleccionar_Cliente.html" ,{"productos":productos}, context_instance = RequestContext(request))
+def v_Seleccionar_Cliente(request,Nombre_Cliente,middle,RFC_Cliente):
+	if Nombre_Cliente == "":
+		Cliente = Clientes.objects.filter(RFC = RFC_Cliente)
+	elif RFC_Cliente == "":
+		Cliente = Clientes.objects.filter(Nombres = Nombre_Cliente)
+	else:
+		Cliente = Clientes.objects.filter(RFC = RFC_Cliente).filter(Nombres = Nombre_Cliente)
+	return render_to_response("Seleccionar_Cliente.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
 
 
-def Clientes_Cambio(request, id_Cliente):
+def v_Clientes_Cambio(request, id_Cliente):
 	Cliente = Clientes.objects.get(pk = id_Cliente)
 	if request.method == "POST":
 		formulario = ClientesForm(request.POST, instance = Cliente)
@@ -64,13 +63,13 @@ def Clientes_Cambio(request, id_Cliente):
 		formulario = ProductoForm(instance=Cliente)
 	return render_to_response("Clientes_Cambio.html", {"formulario":formulario}, context_instance = RequestContext(request))
 
-def Pagos(request):
+def v_Pagos(request):
 	return render_to_response("Pagos.html" , context_instance = RequestContext(request))
 
-def Productos(request):
+def v_Productos(request):
 	return render_to_response("Productos.html" , context_instance = RequestContext(request))
 
-def Productos_Alta(request):
+def v_Productos_Alta(request):
 	if request.method == "POST":
 		formulario = ProductosForm(request.POST)
 		if formulario.is_valid():
@@ -81,7 +80,7 @@ def Productos_Alta(request):
 	return render_to_response("Productos_Alta.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
 
-def Productos_Baja(request):
+def v_Productos_Baja(request):
 	if request.method == "POST":
 		formulario = ProductosForm(request.POST)
 		if formulario.is_valid():
@@ -91,7 +90,7 @@ def Productos_Baja(request):
 		formulario = ProductosForm()
 	return render_to_response("Productos_Baja.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
-def Productos_Cambio(request):
+def v_Productos_Cambio(request):
 	if request.method == "POST":
 		formulario = ProductosForm(request.POST)
 		if formulario.is_valid():
@@ -102,8 +101,8 @@ def Productos_Cambio(request):
 	return render_to_response("Productos_Cambio.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
 
-def Pagos_Factura(request):
+def v_Pagos_Factura(request):
 	return render_to_response("Pagos_Factura.html" , context_instance = RequestContext(request))
 
-def Pagos_Clientes(request):
+def v_Pagos_Clientes(request):
 	return render_to_response("Pagos_Clientes.html" , context_instance = RequestContext(request))

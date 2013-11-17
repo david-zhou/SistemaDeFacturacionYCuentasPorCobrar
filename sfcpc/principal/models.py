@@ -27,7 +27,6 @@ class Estado_Ciudad(models.Model):
 		unique_together = ('Nombre_Ciudad', 'Nombre_Estado')
 
 class Clientes(models.Model):
-	Clave_Cliente = models.AutoField(primary_key = True)
 	RFC = models.CharField(max_length = 13)
 	Tipo_Cliente = (
                 ('F','Fisico'),
@@ -46,12 +45,13 @@ class Clientes(models.Model):
 	Tipo_Credito = (
                 ('15','15 dias'),
                 ('30','30 dias'),
-                ('60','60 dias')
+                ('60','60 dias'),
         )
 	Limite_Credito = models.CharField(max_length = 2, choices = Tipo_Credito)
-	
 	class Meta:
 		unique_together = ('RFC','Calle')
+	
+
 
 class Factura(models.Model):
 	Numero_Factura = models.AutoField(primary_key = True)
@@ -82,7 +82,6 @@ class Pagos(models.Model):
                 ('P','Peso'),
         )
 	Tipo_Cambio = models.CharField(max_length=1,choices=Pesos_Dolares)
-
 	class Meta:
 		unique_together = ('Numero_Factura','Fecha')
 
