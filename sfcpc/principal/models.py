@@ -27,6 +27,7 @@ class Estado_Ciudad(models.Model):
 		unique_together = ('Nombre_Ciudad', 'Nombre_Estado')
 
 class Clientes(models.Model):
+	Clave_Cliente = models.AutoField(primary_key = True)
 	RFC = models.CharField(max_length = 13)
 	Tipo_Cliente = (
                 ('F','Fisico'),
