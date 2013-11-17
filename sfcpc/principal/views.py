@@ -56,13 +56,14 @@ def v_Clientes_Baja(request):
 		formulario = ClientesForm()
 	return render_to_response("Clientes_Baja.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
-def v_Seleccionar_Cliente(request,Nombre_Cliente,middle,RFC_Cliente):
-	if Nombre_Cliente == "":
-		Cliente = Clientes.objects.filter(RFC = RFC_Cliente)
-	elif RFC_Cliente == "":
-		Cliente = Clientes.objects.filter(Nombres = Nombre_Cliente)
-	else:
-		Cliente = Clientes.objects.filter(RFC = RFC_Cliente).filter(Nombres = Nombre_Cliente)
+def v_Seleccionar_Cliente(request,Nombre_Cliente,RFC_Cliente):
+	#if Nombre_Cliente == "":
+	#	Cliente = Clientes.objects.filter(RFC = RFC_Cliente)
+	#elif RFC_Cliente == "":
+	#	Cliente = Clientes.objects.filter(Nombres = Nombre_Cliente)
+	#else:
+	#	Cliente = Clientes.objects.filter(RFC = RFC_Cliente).filter(Nombres = Nombre_Cliente)
+	Cliente = Clientes.objects.all()
 	return render_to_response("Seleccionar_Cliente.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
 
 
@@ -114,6 +115,9 @@ def v_Productos_Cambio(request):
 		formulario = ProductosForm()
 	return render_to_response("Productos_Cambio.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
+def v_Seleccionar_Producto(request):
+	productos = Producto.objects.all()
+	return render_to_response("Seleccionar_Producto.html", {"producto":productos} , context_instance = RequestContext(request))
 
 def v_Pagos_Factura(request):
 	return render_to_response("Pagos_Factura.html" , context_instance = RequestContext(request))

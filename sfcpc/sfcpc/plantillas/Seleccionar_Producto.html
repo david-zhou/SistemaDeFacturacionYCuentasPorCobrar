@@ -1,0 +1,44 @@
+{% extends "Productos.html" %}
+
+{% block titulo %} Seleccion de Productos  {% endblock titulo %}
+{%block Cambios%}active{%endblock Cambios%}
+{% block contenidoProductos %}
+<div class="containter" style="margin-left:30px; margin-top:20px" >
+   <table class = "table table-striped">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Descripcion</th>
+      <th>Unidad de medida</th>
+      <th>Precio</th>
+      <th></th>
+    </tr>
+  </thead>
+<tbody>
+    {% for producto in Producto %}
+    <tr>
+      <td> {{ producto.Clave_Producto }} </td>
+      <td> {{ producto.Nombre }} </td>
+      <td> {{ producto.Estado_Ciudad }} </td>
+      <td> {{ producto.Calle }} </td>
+      <td> <a href ="/Clientes_Cambios/{{ClienteFiltrado.id}}" class="btn btn-success">Seleccionar</a></td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan = "4"> No se encuentran clientes. </td>
+    </tr>
+  {% endfor %}
+</tbody>
+</table>    
+<!--<a class="btn btn-primary" onClick="link()">Buscar Cliente</a>-->
+</div>
+<script type="text/javascript">
+function link()
+{
+  var nombre=document.getElementById('nom').value;
+  var rfc = document.getElementById('RFC').value;
+  window.location.href=nombre+'+'+rfc;
+
+}
+</script>           
+{% endblock contenidoProductos %}

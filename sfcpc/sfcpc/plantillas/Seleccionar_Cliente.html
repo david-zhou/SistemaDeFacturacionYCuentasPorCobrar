@@ -18,12 +18,12 @@
     </tr>
   </thead>
 <tbody>
-    {% for ClienteFiltrado in Clientes %}
+    {% for Client in Clientes %}
     <tr>
-      <td> {{ ClienteFiltrado.RFC }} </td>
-      <td> {{ ClienteFiltrado.Nombre }} </td>
-      <td> {{ ClienteFiltrado.Estado_Ciudad }} </td>
-      <td> {{ ClienteFiltrado.Calle }} </td>
+      <td> {{ Client.RFC }} </td>
+      <td> {{ Client.Tipo }} </td>
+      <td> {{ Client.Nombre }} </td>
+      <td> {{ Client.Undidad_de_Medida }} </td>
       <td> <a href ="/Clientes_Cambios/{{ClienteFiltrado.id}}" class="btn btn-success">Seleccionar</a></td>
     </tr>
     {% empty %}
