@@ -12,19 +12,20 @@
       <th>RFC</th>
       <th>Nombre</th>
       <th>Apellido</th>
-      <th>Estado-Ciudad</th>
+      <th>Estado Ciudad</th>
       <th>Calle</th>
       <th></th>
     </tr>
   </thead>
 <tbody>
-    {% for Client in Clientes %}
+    {% for Client in Cliente %}
     <tr>
       <td> {{ Client.RFC }} </td>
-      <td> {{ Client.Tipo }} </td>
-      <td> {{ Client.Nombre }} </td>
-      <td> {{ Client.Undidad_de_Medida }} </td>
-      <td> <a href ="/Clientes_Cambios/{{ClienteFiltrado.id}}" class="btn btn-success">Seleccionar</a></td>
+      <td> {{ Client.Nombres }} </td>
+      <td> {{ Client.Apellidos}} </td>
+      <td> {{ Client.Estado_Ciudad }} </td>
+      <td> {{ Client.Calle }} </td>
+      <td> <a href ="/Clientes_Cambio/{{Client.Clave_Cliente}}" class="btn btn-success">Seleccionar</a></td>
     </tr>
     {% empty %}
     <tr>

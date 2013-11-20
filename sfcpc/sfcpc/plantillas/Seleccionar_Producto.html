@@ -4,6 +4,8 @@
 {%block Cambios%}active{%endblock Cambios%}
 {% block contenidoProductos %}
 <div class="containter" style="margin-left:30px; margin-top:20px" >
+
+   <a class = 'btn' onClick= "alerta({{producto}});">jojo</a>
    <table class = "table table-striped">
   <thead>
     <tr>
@@ -15,12 +17,12 @@
     </tr>
   </thead>
 <tbody>
-    {% for producto in Producto %}
+    {% for p in producto %}
     <tr>
-      <td> {{ producto.Clave_Producto }} </td>
-      <td> {{ producto.Nombre }} </td>
-      <td> {{ producto.Estado_Ciudad }} </td>
-      <td> {{ producto.Calle }} </td>
+      <td> {{ p.Clave_Producto }} </td>
+      <td> {{ p.Nombre }} </td>
+      <td> {{ p.Unidad_de_medida }} </td>
+      <td> {{ p.Precio }} </td>
       <td> <a href ="/Clientes_Cambios/{{ClienteFiltrado.id}}" class="btn btn-success">Seleccionar</a></td>
     </tr>
     {% empty %}
@@ -33,6 +35,10 @@
 <!--<a class="btn btn-primary" onClick="link()">Buscar Cliente</a>-->
 </div>
 <script type="text/javascript">
+function alerta(numero)
+{
+  alert(numero);
+}
 function link()
 {
   var nombre=document.getElementById('nom').value;

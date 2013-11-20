@@ -45,26 +45,27 @@ def v_Agregar_Estado_Ciudad(request):
 	return render_to_response("Agregar_Estado_Ciudad.html", {"formulario":formulario}, context_instance=RequestContext(request))
 
 
-
-def v_Clientes_Baja(request):
+def v_Clientes_Baja(request, id_Cliente):
+	Cliente = Clientes.objects.get(pk = id_Cliente)
+	#Cliente.delete()
+	#HttpResponseRedirect("/Seleccionar_ClienteBaja")
 	if request.method == "POST":
-		formulario = ClientesForm(request.POST)
+		formulario = ClientesForm(request.POST, instance = Cliente)
 		if formulario.is_valid():
-			formulario.save()
-			return HttpResponseRedirect("/Clientes_Baja")
+			Cliente.delete()
+			return HttpResponseRedirect("/Seleccionar_ClienteBaja")
 	else:
-		formulario = ClientesForm()
+		formulario = ClientesForm(instance = Cliente)
 	return render_to_response("Clientes_Baja.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
 def v_Seleccionar_Cliente(request,Nombre_Cliente,RFC_Cliente):
-	#if Nombre_Cliente == "":
-	#	Cliente = Clientes.objects.filter(RFC = RFC_Cliente)
-	#elif RFC_Cliente == "":
-	#	Cliente = Clientes.objects.filter(Nombres = Nombre_Cliente)
-	#else:
-	#	Cliente = Clientes.objects.filter(RFC = RFC_Cliente).filter(Nombres = Nombre_Cliente)
-	Cliente = Clientes.objects.all()
+
+	Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"+str(RFC_Cliente)+"'")
 	return render_to_response("Seleccionar_Cliente.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
+
+def v_Seleccionar_ClienteBaja(request,Nombre_Cliente,RFC_Cliente):
+	Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"+str(RFC_Cliente)+"'")
+	return render_to_response("Seleccionar_ClienteBaja.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
 
 
 def v_Clientes_Cambio(request, id_Cliente):
@@ -73,9 +74,9 @@ def v_Clientes_Cambio(request, id_Cliente):
 		formulario = ClientesForm(request.POST, instance = Cliente)
 		if formulario.is_valid():
 			formulario.save()
-			return HttpResponseRedirect("/Clientes_Cambio")
+			return HttpResponseRedirect("/Seleccionar_Cliente")
 	else:
-		formulario = ProductoForm(instance=Cliente)
+		formulario = ClientesForm(instance=Cliente)
 	return render_to_response("Clientes_Cambio.html", {"formulario":formulario}, context_instance = RequestContext(request))
 
 def v_Pagos(request):
@@ -116,8 +117,9 @@ def v_Productos_Cambio(request):
 	return render_to_response("Productos_Cambio.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
 def v_Seleccionar_Producto(request):
-	productos = Producto.objects.all()
-	return render_to_response("Seleccionar_Producto.html", {"producto":productos} , context_instance = RequestContext(request))
+	p = Producto.objects.all()
+	#p = Producto.objects.raw('SELECT * FROM principal_producto')
+	return render_to_response("Seleccionar_Producto.html", {"producto":p} , context_instance = RequestContext(request))
 
 def v_Pagos_Factura(request):
 	return render_to_response("Pagos_Factura.html" , context_instance = RequestContext(request))
