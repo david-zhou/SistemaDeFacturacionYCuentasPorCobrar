@@ -12,6 +12,10 @@ class ProductosForm(forms.ModelForm):
 class ClientesForm(forms.ModelForm):
 	class Meta:
 		model = Clientes
+	def __init__(self, *args, **kwargs):
+                user = kwargs.pop('user','')
+                super(ClientesForm, self).__init__(*args, **kwargs)
+                self.fields['Estado_Ciudad']=forms.ModelChoiceField(queryset=Estado_Ciudad.objects.values('Nombre_Estado','Nombre_Ciudad'))
 
 class FacturaForm(forms.ModelForm):
 	class Meta:
