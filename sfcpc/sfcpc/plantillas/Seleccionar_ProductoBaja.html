@@ -1,7 +1,7 @@
 {% extends "Productos.html" %}
 
 {% block titulo %} Seleccion de Productos  {% endblock titulo %}
-{%block Cambios%}active{%endblock Cambios%}
+{%block Bajas%}active{%endblock Bajas%}
 {% block contenidoProductos %}
 <div class="containter" style="margin-left:30px; margin-top:20px" >
   Clave del Producto:<br><input type="text" name="Clave" id="clave"><br>
@@ -23,7 +23,7 @@
       <td> {{ p.Nombre }} </td>
       <td> {{ p.Unidad_de_medida }} </td>
       <td> {{ p.Precio }} </td>
-      <td> <a href ="/Productos_Cambio/{{p.Clave_Producto}}" class="btn btn-success">Seleccionar</a></td>
+      <td> <a href ="/Productos_Baja/{{p.Clave_Producto}}" class="btn btn-success">Seleccionar</a></td>
     </tr>
     {% empty %}
     <tr>

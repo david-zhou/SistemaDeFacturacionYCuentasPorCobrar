@@ -59,8 +59,10 @@ def v_Clientes_Baja(request, id_Cliente):
 	return render_to_response("Clientes_Baja.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
 def v_Seleccionar_Cliente(request,Nombre_Cliente,RFC_Cliente):
-
-	Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"+str(RFC_Cliente)+"'")
+	if Nombre_Cliente is None and RFC_Cliente is None:
+		Cliente = Clientes.objects.all()
+	else:
+		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"+str(RFC_Cliente)+"'")
 	return render_to_response("Seleccionar_Cliente.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
 
 def v_Seleccionar_ClienteBaja(request,Nombre_Cliente,RFC_Cliente):
@@ -96,30 +98,38 @@ def v_Productos_Alta(request):
 	return render_to_response("Productos_Alta.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
 
-def v_Productos_Baja(request):
+def v_Productos_Baja(request, id_Producto):
+	p = Producto.objects.get(pk = id_Producto)
 	if request.method == "POST":
-		formulario = ProductosForm(request.POST)
+		formulario = ProductosForm(request.POST, instance = p)
 		if formulario.is_valid():
 			formulario.save()
-			return HttpResponseRedirect("/Productos_Baja")
+			return HttpResponseRedirect("/Seleccionar_ProductoBaja")
 	else:
-		formulario = ProductosForm()
+		formulario = ProductosForm(instance = p)
 	return render_to_response("Productos_Baja.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
-def v_Productos_Cambio(request):
+def v_Productos_Cambio(request,id_Producto):
+	p = Producto.objects.get(pk = id_Producto)
 	if request.method == "POST":
-		formulario = ProductosForm(request.POST)
+		formulario = ProductosForm(request.POST, instance = p)
 		if formulario.is_valid():
 			formulario.save()
-			return HttpResponseRedirect("/Productos_Cambio")
+			return HttpResponseRedirect("/Seleccionar_Producto")
 	else:
-		formulario = ProductosForm()
+		formulario = ProductosForm(instance = p)
 	return render_to_response("Productos_Cambio.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
-def v_Seleccionar_Producto(request):
-	p = Producto.objects.all()
-	#p = Producto.objects.raw('SELECT * FROM principal_producto')
+def v_Seleccionar_Producto(request,Nombre_Producto,Clave_Producto):
+	if Nombre_Producto is None and Clave_Producto is None:
+		p = Producto.objects.raw("Select * FROM principal_producto")
+	else:
+		p = Producto.objects.raw("Select * FROM principal_producto WHERE Nombre LIKE '"'%%%%'+str(Nombre_Producto)+'%%%%'"' OR Clave_Producto LIKE '"+str(Clave_Producto)+"'")
 	return render_to_response("Seleccionar_Producto.html", {"producto":p} , context_instance = RequestContext(request))
+
+def v_Seleccionar_ProductoBaja(request,Nombre_Producto,Clave_Producto):
+	p = Producto.objects.raw("Select * FROM principal_producto WHERE Nombre LIKE '"'%%%%'+str(Nombre_Producto)+'%%%%'"' OR Clave_Producto LIKE '"+str(Clave_Producto)+"'")
+	return render_to_response("Seleccionar_ProductoBaja.html", {"producto":p} , context_instance = RequestContext(request))
 
 def v_Pagos_Factura(request):
 	return render_to_response("Pagos_Factura.html" , context_instance = RequestContext(request))
