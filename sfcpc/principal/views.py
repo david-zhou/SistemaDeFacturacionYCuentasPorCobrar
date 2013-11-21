@@ -5,8 +5,10 @@ from django.template import RequestContext
 from principal.models import Factura
 from principal.forms import FacturaForm
 from principal.forms import ClientesForm
+from principal.forms import ClientesBajasForm
 from principal.models import Producto
 from principal.forms import ProductosForm
+from principal.forms import ProductosBajasForm
 from principal.models import Dolar_peso
 from principal.models import Detalle_Factura
 from principal.models import Pagos
@@ -48,22 +50,22 @@ def v_Agregar_Estado_Ciudad(request):
 def v_Clientes_Baja(request, id_Cliente):
 	Cliente = Clientes.objects.get(pk = id_Cliente)
 	if request.method == "POST":
-		formulario = ClientesForm(request.POST, instance = Cliente)
+		formulario = ClientesBajasForm(request.POST, instance = Cliente)
 		Clientes.objects.filter(pk = id_Cliente).update(Activo = 0)
 		return HttpResponseRedirect("/Seleccionar_ClienteBaja")
 	else:
-		formulario = ClientesForm(instance = Cliente)
+		formulario = ClientesBajasForm(instance = Cliente)
 	return render_to_response("Clientes_Baja.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
 def v_Seleccionar_Cliente(request,Nombre_Cliente,RFC_Cliente):
 	if Nombre_Cliente is None and RFC_Cliente is None:
-		Cliente = Clientes.objects.all()
+		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE Activo = 1")
 	else:
-		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"+str(RFC_Cliente)+"'")
+		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE (Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"+str(RFC_Cliente)+"') AND Activo = 1")
 	return render_to_response("Seleccionar_Cliente.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
 
 def v_Seleccionar_ClienteBaja(request,Nombre_Cliente,RFC_Cliente):
-	Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"+str(RFC_Cliente)+"'")
+	Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE (Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"+str(RFC_Cliente)+"') AND Activo = 1")
 	return render_to_response("Seleccionar_ClienteBaja.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
 
 
@@ -98,12 +100,12 @@ def v_Productos_Alta(request):
 def v_Productos_Baja(request, id_Producto):
 	p = Producto.objects.get(pk = id_Producto)
 	if request.method == "POST":
-		formulario = ProductosForm(request.POST, instance = p)
+		formulario = ProductosBajasForm(request.POST, instance = p)
 		if formulario.is_valid():
 			Producto.objects.filter(pk = id_Producto).update(Activo = 0)
 			return HttpResponseRedirect("/Seleccionar_ProductoBaja")
 	else:
-		formulario = ProductosForm(instance = p)
+		formulario = ProductosBajasForm(instance = p)
 	return render_to_response("Productos_Baja.html", {"formulario":formulario} , context_instance = RequestContext(request))
 
 def v_Productos_Cambio(request,id_Producto):
