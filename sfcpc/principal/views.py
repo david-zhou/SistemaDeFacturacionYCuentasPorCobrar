@@ -47,13 +47,10 @@ def v_Agregar_Estado_Ciudad(request):
 
 def v_Clientes_Baja(request, id_Cliente):
 	Cliente = Clientes.objects.get(pk = id_Cliente)
-	#Cliente.delete()
-	#HttpResponseRedirect("/Seleccionar_ClienteBaja")
 	if request.method == "POST":
 		formulario = ClientesForm(request.POST, instance = Cliente)
-		if formulario.is_valid():
-			Cliente.delete()
-			return HttpResponseRedirect("/Seleccionar_ClienteBaja")
+		Clientes.objects.filter(pk = id_Cliente).update(Activo = 0)
+		return HttpResponseRedirect("/Seleccionar_ClienteBaja")
 	else:
 		formulario = ClientesForm(instance = Cliente)
 	return render_to_response("Clientes_Baja.html", {"formulario":formulario} , context_instance = RequestContext(request))
@@ -103,7 +100,7 @@ def v_Productos_Baja(request, id_Producto):
 	if request.method == "POST":
 		formulario = ProductosForm(request.POST, instance = p)
 		if formulario.is_valid():
-			formulario.save()
+			Producto.objects.filter(pk = id_Producto).update(Activo = 0)
 			return HttpResponseRedirect("/Seleccionar_ProductoBaja")
 	else:
 		formulario = ProductosForm(instance = p)
@@ -122,13 +119,14 @@ def v_Productos_Cambio(request,id_Producto):
 
 def v_Seleccionar_Producto(request,Nombre_Producto,Clave_Producto):
 	if Nombre_Producto is None and Clave_Producto is None:
-		p = Producto.objects.raw("Select * FROM principal_producto")
+		p = Producto.objects.raw("Select * FROM principal_producto WHERE Activo = 1")
 	else:
-		p = Producto.objects.raw("Select * FROM principal_producto WHERE Nombre LIKE '"'%%%%'+str(Nombre_Producto)+'%%%%'"' OR Clave_Producto LIKE '"+str(Clave_Producto)+"'")
+		p = Producto.objects.raw("Select * FROM principal_producto WHERE (Nombre LIKE '"'%%%%'+str(Nombre_Producto)+'%%%%'"' OR Clave_Producto LIKE '"+str(Clave_Producto)+"') AND Activo = 1")	
 	return render_to_response("Seleccionar_Producto.html", {"producto":p} , context_instance = RequestContext(request))
 
+
 def v_Seleccionar_ProductoBaja(request,Nombre_Producto,Clave_Producto):
-	p = Producto.objects.raw("Select * FROM principal_producto WHERE Nombre LIKE '"'%%%%'+str(Nombre_Producto)+'%%%%'"' OR Clave_Producto LIKE '"+str(Clave_Producto)+"'")
+	p = Producto.objects.raw("Select * FROM principal_producto WHERE (Nombre LIKE '"'%%%%'+str(Nombre_Producto)+'%%%%'"' OR Clave_Producto LIKE '"+str(Clave_Producto)+"') AND Activo = 1")
 	return render_to_response("Seleccionar_ProductoBaja.html", {"producto":p} , context_instance = RequestContext(request))
 
 def v_Pagos_Factura(request):
