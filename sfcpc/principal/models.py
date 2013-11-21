@@ -12,7 +12,7 @@ class Producto(models.Model):
 	Unidad_de_medida = models.CharField(max_length = 10)
 	Descripcion = models.CharField(max_length = 50, blank=True)
 	Precio = models.DecimalField(max_digits = 8, decimal_places = 2)
-	Activo = models.BooleanField()
+	Activo = models.BooleanField(default=True)
 
 
 class Dolar_peso(models.Model):
@@ -49,6 +49,7 @@ class Clientes(models.Model):
                 ('60','60 dias'),
         )
 	Limite_Credito = models.CharField(max_length = 2, choices = Tipo_Credito)
+	Activo = models.BooleanField(default=True)
 	class Meta:
 		unique_together = ('RFC','Calle')
 	
