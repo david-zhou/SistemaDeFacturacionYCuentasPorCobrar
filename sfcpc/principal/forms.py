@@ -30,23 +30,36 @@ class ProductosBajasForm(forms.ModelForm):
 
 class ClientesForm(forms.ModelForm):
 	class Meta:
-		model = Clientes
-		exclude = ("Activo")
+                model = Clientes
+                exclude = ("Activo")
+
 	def clean(self):
                 data=self.cleaned_data
                 rfc=self.cleaned_data.get('RFC')
                 tipo=self.cleaned_data.get('Fisico_Moral')
+                numInt=self.cleaned_data.get('Numero_interior')
+                estCiu=self.cleaned_data.get('Estado_Ciudad')
+                #if not estCiu:
+                #        raise forms.ValidationError('errorcito')
+
+
+                if not numInt:
+                        data['Numero_interior']=0
                 if tipo == 'F' and len(rfc) != 13:
                         raise forms.ValidationError("Un cliente fisico debe tener un RFC de 13 caracteres")
                 if tipo == 'M' and len(rfc) != 12:
                         raise forms.ValidationError("Un cliente moral debe tener un RFC de 12 caracteres")
                 return data
-
                 
 	def __init__(self, *args, **kwargs):
                 user = kwargs.pop('user','')
                 super(ClientesForm, self).__init__(*args, **kwargs)
-                #self.fields['Estado_Ciudad']=forms.ModelChoiceField(queryset=Estado_Ciudad.objects.values('Nombre_Estado','Nombre_Ciudad'))
+                #queryset = self.fields['Estado_Ciudad'].queryset
+                #choices = [(Estado_Ciudad.pk) for est in queryset]
+                #self.fields['Estado_Ciudad'].queryset=Estado_Ciudad.objects.values('Nombre_Estado','Nombre_Ciudad')
+                #'Nombre_Estado','Nombre_Ciudad'
+
+
 
 class ClientesBajasForm(forms.ModelForm):
 	class Meta:
