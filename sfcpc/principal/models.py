@@ -23,6 +23,10 @@ class Estado_Ciudad(models.Model):
 	Clave_EstadoCiudad = models.AutoField(primary_key = True)
 	Nombre_Estado = models.CharField(max_length = 30)
 	Nombre_Ciudad = models.CharField(max_length = 30)
+	
+	def __str__(self): 
+		return "%s, %s"% (self.Nombre_Estado, self.Nombre_Ciudad)
+	
 	class Meta:
 		unique_together = ('Nombre_Ciudad', 'Nombre_Estado')
 
@@ -37,10 +41,10 @@ class Clientes(models.Model):
 	Nombres = models.CharField(max_length = 50)
 	Apellidos = models.CharField(max_length = 50, blank=True)
 	Calle = models.CharField(max_length = 50) 
-	Numero_interior = models.IntegerField(blank=True)
+	Numero_interior = models.IntegerField(null=True, blank=True)
 	Numero_exterior = models.IntegerField()
 	Colonia = models.CharField(max_length = 50, blank=True)
-	CP = models.IntegerField(blank=True)
+	CP = models.IntegerField(null=True, blank=True)
 	Estado_Ciudad = models.ForeignKey(Estado_Ciudad)
 	Cliente_Moroso = models.BooleanField()
 	Tipo_Credito = (

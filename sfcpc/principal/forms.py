@@ -42,7 +42,8 @@ class ClientesForm(forms.ModelForm):
                 estCiu=self.cleaned_data.get('Estado_Ciudad')
                 #if not estCiu:
                 #        raise forms.ValidationError('errorcito')
-
+                #est=Estado_Ciudad.objects.get(Nombre_Estado='Baja California', Nombre_Ciudad='Mexicali')
+                #data['Estado_Ciudad']=est
 
                 if not numInt:
                         data['Numero_interior']=0

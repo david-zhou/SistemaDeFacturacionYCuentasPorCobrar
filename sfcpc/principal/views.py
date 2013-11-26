@@ -61,11 +61,11 @@ def v_Seleccionar_Cliente(request,Nombre_Cliente,RFC_Cliente):
 	if Nombre_Cliente is None and RFC_Cliente is None:
 		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE Activo = 1")
 	else:
-		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE (Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"+str(RFC_Cliente)+"') AND Activo = 1")
+		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE (Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"') AND Activo = 1")
 	return render_to_response("Seleccionar_Cliente.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
 
 def v_Seleccionar_ClienteBaja(request,Nombre_Cliente,RFC_Cliente):
-	Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE (Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"+str(RFC_Cliente)+"') AND Activo = 1")
+	Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE (Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"') AND Activo = 1")
 	return render_to_response("Seleccionar_ClienteBaja.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
 
 
@@ -123,12 +123,12 @@ def v_Seleccionar_Producto(request,Nombre_Producto,Clave_Producto):
 	if Nombre_Producto is None and Clave_Producto is None:
 		p = Producto.objects.raw("Select * FROM principal_producto WHERE Activo = 1")
 	else:
-		p = Producto.objects.raw("Select * FROM principal_producto WHERE (Nombre LIKE '"'%%%%'+str(Nombre_Producto)+'%%%%'"' OR Clave_Producto LIKE '"+str(Clave_Producto)+"') AND Activo = 1")	
+		p = Producto.objects.raw("Select * FROM principal_producto WHERE (Nombre LIKE '"'%%%%'+str(Nombre_Producto)+'%%%%'"' OR Clave_Producto LIKE '"'%%%%'+str(Clave_Producto)+'%%%%'"') AND Activo = 1")	
 	return render_to_response("Seleccionar_Producto.html", {"producto":p} , context_instance = RequestContext(request))
 
 
 def v_Seleccionar_ProductoBaja(request,Nombre_Producto,Clave_Producto):
-	p = Producto.objects.raw("Select * FROM principal_producto WHERE (Nombre LIKE '"'%%%%'+str(Nombre_Producto)+'%%%%'"' OR Clave_Producto LIKE '"+str(Clave_Producto)+"') AND Activo = 1")
+	p = Producto.objects.raw("Select * FROM principal_producto WHERE (Nombre LIKE '"'%%%%'+str(Nombre_Producto)+'%%%%'"' OR Clave_Producto LIKE '"'%%%%'+str(Clave_Producto)+'%%%%'"') AND Activo = 1")
 	return render_to_response("Seleccionar_ProductoBaja.html", {"producto":p} , context_instance = RequestContext(request))
 
 def v_Pagos_Factura(request):
