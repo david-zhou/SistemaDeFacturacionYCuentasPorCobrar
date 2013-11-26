@@ -4,6 +4,7 @@ from principal.models import Clientes
 from principal.models import Factura
 from principal.models import Pagos
 from principal.models import Estado_Ciudad
+import re
 
 class ProductosForm(forms.ModelForm):
 	class Meta:
@@ -40,11 +41,14 @@ class ClientesForm(forms.ModelForm):
                 numInt=self.cleaned_data.get('Numero_interior')
                 codpos=self.cleaned_data.get('CP')
                 estCiu=self.cleaned_data.get('Estado_Ciudad')
-                #if not estCiu:
-                #        raise forms.ValidationError('errorcito')
-                #est=Estado_Ciudad.objects.get(Nombre_Estado='Baja California', Nombre_Ciudad='Mexicali')
-                #data['Estado_Ciudad']=est
-
+                if tipo == 'F':
+                        matchObj = re.match( r'[A-Za-z]{4}\d{6}(?:[A-Za-z\d]{3})?$', rfc)
+                        if not matchObj:
+                           raise forms.ValidationError("RFC invalido.")
+                if tipo == 'M':
+                        matchObj = re.match( r'[A-Za-z]{3}\d{6}(?:[A-Za-z\d]{3})?$', rfc)
+                        if not matchObj:
+                           raise forms.ValidationError("RFC invalido.")
                 if not numInt:
                         data['Numero_interior']=0
                 if not codpos:
@@ -54,6 +58,7 @@ class ClientesForm(forms.ModelForm):
                 if tipo == 'M' and len(rfc) != 12:
                         raise forms.ValidationError("Un cliente moral debe tener un RFC de 12 caracteres")
                 return data
+
                 
 	def __init__(self, *args, **kwargs):
                 user = kwargs.pop('user','')
