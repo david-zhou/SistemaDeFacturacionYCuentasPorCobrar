@@ -38,6 +38,7 @@ class ClientesForm(forms.ModelForm):
                 rfc=self.cleaned_data.get('RFC')
                 tipo=self.cleaned_data.get('Fisico_Moral')
                 numInt=self.cleaned_data.get('Numero_interior')
+                codpos=self.cleaned_data.get('CP')
                 estCiu=self.cleaned_data.get('Estado_Ciudad')
                 #if not estCiu:
                 #        raise forms.ValidationError('errorcito')
@@ -45,6 +46,8 @@ class ClientesForm(forms.ModelForm):
 
                 if not numInt:
                         data['Numero_interior']=0
+                if not codpos:
+                        data['CP']=0
                 if tipo == 'F' and len(rfc) != 13:
                         raise forms.ValidationError("Un cliente fisico debe tener un RFC de 13 caracteres")
                 if tipo == 'M' and len(rfc) != 12:
