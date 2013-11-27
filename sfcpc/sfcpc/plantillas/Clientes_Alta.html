@@ -8,13 +8,15 @@
 	<!--{{ formulario.as_p }}-->
 	{% for field in formulario %}
 		<div>
-			{{field.errors}}
+			
 			<table>
 				<col width="120">
 				<col width="300">
-				
+				<tr>{{field.errors}}</tr>
+				<tr>
 				<td>{{field.label}} :</td>
 				<td>{{field}}</td>
+				</tr>
 				 
 			</table>
 		</div>

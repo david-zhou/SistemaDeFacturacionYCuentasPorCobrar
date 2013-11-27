@@ -9,8 +9,9 @@
    <table class = "table table-striped">
   <thead>
     <tr>
+      <th>Clave Producto</th>
+      <th>Tipo</th>
       <th>Nombre</th>
-      <th>Descripcion</th>
       <th>Unidad de medida</th>
       <th>Precio</th>
       <th></th>
@@ -20,6 +21,7 @@
     {% for p in producto %}
     <tr>
       <td> {{ p.Clave_Producto }} </td>
+      <td> {{ p.Tipo}} </td>
       <td> {{ p.Nombre }} </td>
       <td> {{ p.Unidad_de_medida }} </td>
       <td> {{ p.Precio }} </td>

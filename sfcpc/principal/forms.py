@@ -41,14 +41,7 @@ class ClientesForm(forms.ModelForm):
                 numInt=self.cleaned_data.get('Numero_interior')
                 codpos=self.cleaned_data.get('CP')
                 estCiu=self.cleaned_data.get('Estado_Ciudad')
-                if tipo == 'F':
-                        matchObj = re.match( r'[A-Za-z]{4}\d{6}(?:[A-Za-z\d]{3})?$', rfc)
-                        if not matchObj:
-                           raise forms.ValidationError("RFC invalido.")
-                if tipo == 'M':
-                        matchObj = re.match( r'[A-Za-z]{3}\d{6}(?:[A-Za-z\d]{3})?$', rfc)
-                        if not matchObj:
-                           raise forms.ValidationError("RFC invalido.")
+
                 if not numInt:
                         data['Numero_interior']=0
                 if not codpos:
@@ -57,6 +50,14 @@ class ClientesForm(forms.ModelForm):
                         raise forms.ValidationError("Un cliente fisico debe tener un RFC de 13 caracteres")
                 if tipo == 'M' and len(rfc) != 12:
                         raise forms.ValidationError("Un cliente moral debe tener un RFC de 12 caracteres")
+                if tipo == 'F':
+                        matchObj = re.match( r'[A-Za-z]{4}\d{6}(?:[A-Za-z\d]{3})?$', rfc)
+                        if not matchObj:
+                           raise forms.ValidationError("RFC invalido.")
+                if tipo == 'M':
+                        matchObj = re.match( r'[A-Za-z]{3}\d{6}(?:[A-Za-z\d]{3})?$', rfc)
+                        if not matchObj:
+                           raise forms.ValidationError("RFC invalido.")
                 return data
 
                 
