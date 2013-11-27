@@ -65,7 +65,7 @@ class ClientesForm(forms.ModelForm):
                 super(ClientesForm, self).__init__(*args, **kwargs)
                 #queryset = self.fields['Estado_Ciudad'].queryset
                 #choices = [(Estado_Ciudad.pk) for est in queryset]
-                #self.fields['Estado_Ciudad'].queryset=Estado_Ciudad.objects.values('Nombre_Estado','Nombre_Ciudad')
+                self.fields['Estado_Ciudad'].queryset=Estado_Ciudad.objects.order_by('Nombre_Estado')
                 #'Nombre_Estado','Nombre_Ciudad'
 
 
