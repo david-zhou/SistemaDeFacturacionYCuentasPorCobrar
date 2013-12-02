@@ -20,7 +20,8 @@ def v_index(request):
 	return render_to_response("index.html" , context_instance = RequestContext(request))
 
 def v_Factura(request):
-	return render_to_response("Factura.html" , context_instance = RequestContext(request))
+	p = Producto.objects.raw("Select * FROM principal_producto WHERE Activo = 1")
+	return render_to_response("Factura.html" ,{"productos":p}, context_instance = RequestContext(request))
 
 def v_Clientes(request):
 		return render_to_response("Clientes.html" , context_instance = RequestContext(request))
