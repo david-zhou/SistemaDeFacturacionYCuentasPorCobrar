@@ -47,17 +47,23 @@ class ClientesForm(forms.ModelForm):
                 if not codpos:
                         data['CP']=0
                 if tipo == 'F' and len(rfc) != 13:
-                        raise forms.ValidationError("Un cliente fisico debe tener un RFC de 13 caracteres")
+                        self._errors['RFC']="Un cliente fisico debe tener un RFC de 13 caracteres"
+                        return data
+                        #raise forms.ValidationError("Un cliente fisico debe tener un RFC de 13 caracteres")
                 if tipo == 'M' and len(rfc) != 12:
-                        raise forms.ValidationError("Un cliente moral debe tener un RFC de 12 caracteres")
+                        self._errors['RFC']="Un cliente moral debe tener un RFC de 12 caracteres"
+                        return data
+                        #raise forms.ValidationError("Un cliente moral debe tener un RFC de 12 caracteres")
                 if tipo == 'F':
                         matchObj = re.match( r'[A-Za-z]{4}\d{6}(?:[A-Za-z\d]{3})?$', rfc)
                         if not matchObj:
-                           raise forms.ValidationError("RFC invalido.")
+                           self._errors['RFC']="RFC invalido"
+                           return data
                 if tipo == 'M':
                         matchObj = re.match( r'[A-Za-z]{3}\d{6}(?:[A-Za-z\d]{3})?$', rfc)
                         if not matchObj:
-                           raise forms.ValidationError("RFC invalido.")
+                           self._errors['RFC']="RFC invalido"
+                           return data
                 return data
 
                 
