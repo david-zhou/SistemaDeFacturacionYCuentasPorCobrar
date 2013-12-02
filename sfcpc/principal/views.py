@@ -101,9 +101,9 @@ def v_Productos_Baja(request, id_Producto):
 	p = Producto.objects.get(pk = id_Producto)
 	if request.method == "POST":
 		formulario = ProductosBajasForm(request.POST, instance = p)
-		if formulario.is_valid():
-			Producto.objects.filter(pk = id_Producto).update(Activo = 0)
-			return HttpResponseRedirect("/Seleccionar_ProductoBaja")
+
+		Producto.objects.filter(pk = id_Producto).update(Activo = 0)
+		return HttpResponseRedirect("/Seleccionar_ProductoBaja")
 	else:
 		formulario = ProductosBajasForm(instance = p)
 	return render_to_response("Productos_Baja.html", {"formulario":formulario} , context_instance = RequestContext(request))
