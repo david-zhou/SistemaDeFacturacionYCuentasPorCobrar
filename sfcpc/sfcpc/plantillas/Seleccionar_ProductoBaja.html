@@ -41,7 +41,14 @@ function link()
 {
   var nombre=document.getElementById('nom').value;
   var clave = document.getElementById('clave').value;
-  window.location.href=nombre+'+'+clave;
+  if(!nombre && !clave)
+  {
+  window.location.href='null+null';
+  }
+  else
+  {
+  window.location.href=nombre+'+'+clave;    
+  }
 
 }
 </script>           
