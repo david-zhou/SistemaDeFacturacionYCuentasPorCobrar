@@ -14,21 +14,20 @@
           Facturar</h6>
   RFC Cliente: <br><input type="text" name="Cliente"><br>
   Fecha: <br><input type="text" name="Fecha" value=""><br>
-
-  <table class = "table table-striped">
-	<thead>
+<div id="tablita" style="height:400px; overflow-y: scroll;">
+  <table class = "table table-striped" id ="TablaFactura">
+	 <thead>
 		<tr>
 			<th>Nombre</th>
 			<th>Cantidad</th>
 			<th>Precio</th>
 			<th>Total</th>
-			<th></th>
 		</tr>
-	</thead>
-<tbody>
-</tbody>
-</table>
-
+	 </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
 
     <div id="example" class="modal hide fade in" style="display: none; ">  
     <div class="modal-header">  
@@ -95,7 +94,14 @@ function link()
   var yyy="{{p.Nombre}}".toLowerCase();
     if (iii.indexOf(claP) != -1 && yyy.indexOf(nomP) != -1)
     {
+      var element = document.createElement("input");
 
+       //Assign different attributes to the element.
+      element.setAttribute("type", "Button");
+      element.setAttribute("value", "Seleccionar");
+      element.setAttribute("name", "Button");
+      element.setAttribute("class", "btn");
+      element.setAttribute("onClick","AgregarProducto('{{p.Nombre}}','{{p.Precio}}')")
       var row=table.insertRow(-1);
       var cellClave=row.insertCell(0);
       var cellNombre=row.insertCell(1);
@@ -114,9 +120,66 @@ function link()
 
   {% endfor %}
 }
-function AgregarProducto()
+function AgregarProducto(Nombre,Precio)
 {
+    var Borrar = document.createElement("input");
+    var Incrementar = document.createElement("input");
+    var Decrementar = document.createElement("input");
+    Borrar.setAttribute("type", "Button");
+    Borrar.setAttribute("value", "Borrar");
+    Borrar.setAttribute("name", "Button");
+    Borrar.setAttribute("class", "btn btn-danger");
+    Incrementar.setAttribute("type", "Button");
+    Incrementar.setAttribute("value", "+");
+    Incrementar.setAttribute("name", "Button");
+    Incrementar.setAttribute("class", "btn");
+    Decrementar.setAttribute("type", "Button");
+    Decrementar.setAttribute("value", "-");
+    Decrementar.setAttribute("name", "Button");
+    Decrementar.setAttribute("class", "btn");
+    Incrementar.setAttribute("onClick","IncrementarCantidad(this)");
+    Decrementar.setAttribute("onClick","DecrementarCantidad(this)");
+    Borrar.setAttribute("onClick","Borrar(this)");
+    var tableFactura=document.getElementById("TablaFactura");
+    var row = tableFactura.insertRow(-1);
+    var cellNombre=row.insertCell(0);
+    var cellCantidad=row.insertCell(1);
+    var cellPrecio=row.insertCell(2);
+    var cellTotal=row.insertCell(3);
+    var cellBotones = row.insertCell(4);
+    cellNombre.innerHTML = Nombre;
+    cellCantidad.innerHTML = "1";
+    cellPrecio.innerHTML = Precio;
+    cellTotal.innerHTML = Precio;
+    cellBotones.appendChild(Decrementar);
+    cellBotones.appendChild(Incrementar);
+    cellBotones.appendChild(Borrar);
 
+}
+function IncrementarCantidad(posicion)
+{
+  var tableFactura=document.getElementById("TablaFactura");
+  var rowIndex = posicion.parentNode.parentNode.rowIndex;
+  tableFactura.rows[rowIndex].cells[1].innerHTML = parseInt(tableFactura.rows[rowIndex].cells[1].innerHTML) + 1;
+  tableFactura.rows[rowIndex].cells[3].innerHTML = parseInt(tableFactura.rows[rowIndex].cells[1].innerHTML) *
+  parseInt(tableFactura.rows[rowIndex].cells[2].innerHTML);
+}
+function DecrementarCantidad(posicion)
+{
+  var tableFactura=document.getElementById("TablaFactura");
+  var rowIndex = posicion.parentNode.parentNode.rowIndex;
+  if(!(parseInt(tableFactura.rows[rowIndex].cells[1].innerHTML) - 1 < 1))
+  {
+    tableFactura.rows[rowIndex].cells[1].innerHTML = parseInt(tableFactura.rows[rowIndex].cells[1].innerHTML) - 1;
+    tableFactura.rows[rowIndex].cells[3].innerHTML = parseInt(tableFactura.rows[rowIndex].cells[1].innerHTML) *
+    parseInt(tableFactura.rows[rowIndex].cells[2].innerHTML);
+  }
+}
+function Borrar(posicion)
+{
+  var tableFactura=document.getElementById("TablaFactura");
+  var rowIndex = posicion.parentNode.parentNode.rowIndex;
+  tableFactura.deleteRow(rowIndex);
 }
 </script> 
 {% endblock contenido %}
