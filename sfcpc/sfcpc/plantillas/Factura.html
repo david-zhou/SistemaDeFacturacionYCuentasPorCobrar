@@ -36,8 +36,8 @@
   <h3>Seleccionar Producto</h3>  
 </div>  
 <div class="modal-body">  
-  Clave del producto:<br><input type="text" name="Producto"><br>
-  Nombre del producto:<br><input type="text" name="Nombre"><br>
+  Clave del producto:<br><input type="text" name="Producto" id="claveP"><br>
+  Nombre del producto:<br><input type="text" name="Nombre" id="nombreP"><br>
    <table class = "table table-striped" id ="TablaProductos">
   <thead>
     <tr>
@@ -72,22 +72,51 @@
 <script>
 function link()
 {
-  var jdata = new Array();
+   var element = document.createElement("input");
+
+     //Assign different attributes to the element.
+    element.setAttribute("type", "Button");
+    element.setAttribute("value", "Seleccionar");
+    element.setAttribute("name", "Button");
+    element.setAttribute("class", "btn");
+    element.setAttribute("onClick","AgregarProducto()")
+    var nomP=document.getElementById("nombreP").value;
+    var claP=document.getElementById("claveP").value;
+    nomP=nomP.toLowerCase();
+    claP=claP.toLowerCase();
+
   var table=document.getElementById("TablaProductos");
-  
+  var rowCount = table.rows.length;
+  for (var x=rowCount-1; x>0; x--) {
+    table.deleteRow(x);
+  }
   {% for p in productos %}
-    var row=table.insertRow(-1);
-    var cellClave=row.insertCell(0);
-    var cellNombre=row.insertCell(1);
-    var cellDescripcion=row.insertCell(2);
-    var cellPrecio=row.insertCell(3);
-    cellClave.innerHTML="{{p.Clave_Producto}}";
-    cellNombre.innerHTML="{{p.Nombre}}";
-    cellDescripcion.innerHTML = "{{p.Descripcion}}";
-    cellPrecio.innerHTML = "{{p.Precio}}";
+  var iii="{{p.Clave_Producto}}".toLowerCase();
+  var yyy="{{p.Nombre}}".toLowerCase();
+    if (iii.indexOf(claP) != -1 && yyy.indexOf(nomP) != -1)
+    {
+
+      var row=table.insertRow(-1);
+      var cellClave=row.insertCell(0);
+      var cellNombre=row.insertCell(1);
+      var cellDescripcion=row.insertCell(2);
+      var cellPrecio=row.insertCell(3);
+      var cellSeleccionar = row.insertCell(4);
+      cellClave.innerHTML="{{p.Clave_Producto}}";
+      cellNombre.innerHTML="{{p.Nombre}}";
+      cellDescripcion.innerHTML = "{{p.Descripcion}}";
+      cellPrecio.innerHTML = "{{p.Precio}}";
+      cellSeleccionar.appendChild(element);      
+    }
+    
+
     {% empty %}
 
   {% endfor %}
+}
+function AgregarProducto()
+{
+
 }
 </script> 
 {% endblock contenido %}
