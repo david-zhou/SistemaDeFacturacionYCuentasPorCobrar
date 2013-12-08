@@ -59,7 +59,7 @@
   <a data-toggle="modal" href="#example" class="btn btn-info">Buscar Producto</a>
 
 <div  style="float: right; margin-right:190px">
-  Subtotal: <input type="text" name="Subtotal"><br>
+  Subtotal: <label id="subtotal">0</label><br>
   Pago: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="Pago"><br>
  </div>
 <br>
@@ -148,21 +148,41 @@ function AgregarProducto(Nombre,Precio)
     var cellTotal=row.insertCell(3);
     var cellBotones = row.insertCell(4);
     cellNombre.innerHTML = Nombre;
-    cellCantidad.innerHTML = "1";
-    cellPrecio.innerHTML = Precio;
-    cellTotal.innerHTML = Precio;
+    cellCantidad.innerHTML = (1).toFixed(3);
+    var precioJ = parseFloat(Precio);
+    cellPrecio.innerHTML = precioJ.toFixed(2);
+    cellTotal.innerHTML = precioJ.toFixed(2);
     cellBotones.appendChild(Decrementar);
     cellBotones.appendChild(Incrementar);
     cellBotones.appendChild(Borrar);
+    actualizarTotal();
+
+}
+function actualizarTotal()
+{
+  var l=document.getElementById('TablaFactura').getElementsByTagName('tr').length;
+  var tableFactura = document.getElementById("TablaFactura");
+  //alert(l);
+  var total = 0.0;
+  total=parseFloat(total);
+  //alert(l);
+  for(var i=1;i<l;i++)
+  {
+    var costo=parseFloat(tableFactura.rows[i].cells[3].innerHTML);
+    total = parseFloat(total) + parseFloat(costo);
+  }
+  document.getElementById("subtotal").innerHTML = total.toFixed(2);
+  //alert(total);
 
 }
 function IncrementarCantidad(posicion)
 {
   var tableFactura=document.getElementById("TablaFactura");
   var rowIndex = posicion.parentNode.parentNode.rowIndex;
-  tableFactura.rows[rowIndex].cells[1].innerHTML = parseInt(tableFactura.rows[rowIndex].cells[1].innerHTML) + 1;
-  tableFactura.rows[rowIndex].cells[3].innerHTML = parseInt(tableFactura.rows[rowIndex].cells[1].innerHTML) *
-  parseInt(tableFactura.rows[rowIndex].cells[2].innerHTML);
+  tableFactura.rows[rowIndex].cells[1].innerHTML = (parseFloat(tableFactura.rows[rowIndex].cells[1].innerHTML) + 1).toFixed(3);
+  tableFactura.rows[rowIndex].cells[3].innerHTML = (parseFloat(tableFactura.rows[rowIndex].cells[1].innerHTML) *
+  parseFloat(tableFactura.rows[rowIndex].cells[2].innerHTML)).toFixed(2);
+  actualizarTotal();
 }
 function DecrementarCantidad(posicion)
 {
@@ -170,9 +190,10 @@ function DecrementarCantidad(posicion)
   var rowIndex = posicion.parentNode.parentNode.rowIndex;
   if(!(parseInt(tableFactura.rows[rowIndex].cells[1].innerHTML) - 1 < 1))
   {
-    tableFactura.rows[rowIndex].cells[1].innerHTML = parseInt(tableFactura.rows[rowIndex].cells[1].innerHTML) - 1;
-    tableFactura.rows[rowIndex].cells[3].innerHTML = parseInt(tableFactura.rows[rowIndex].cells[1].innerHTML) *
-    parseInt(tableFactura.rows[rowIndex].cells[2].innerHTML);
+    tableFactura.rows[rowIndex].cells[1].innerHTML = (parseFloat(tableFactura.rows[rowIndex].cells[1].innerHTML) - 1).toFixed(3);
+    tableFactura.rows[rowIndex].cells[3].innerHTML = (parseFloat(tableFactura.rows[rowIndex].cells[1].innerHTML) *
+    parseFloat(tableFactura.rows[rowIndex].cells[2].innerHTML)).toFixed(2);
+    actualizarTotal();
   }
 }
 function Borrar(posicion)
@@ -180,6 +201,7 @@ function Borrar(posicion)
   var tableFactura=document.getElementById("TablaFactura");
   var rowIndex = posicion.parentNode.parentNode.rowIndex;
   tableFactura.deleteRow(rowIndex);
+  actualizarTotal();
 }
 </script> 
 {% endblock contenido %}
