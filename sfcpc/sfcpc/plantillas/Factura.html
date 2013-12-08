@@ -12,8 +12,16 @@
                     text-align: left;
                     ">
           Facturar</h6>
-  RFC Cliente: <br><input type="text" name="Cliente"><br>
-  Fecha: <br><input type="text" name="Fecha" value=""><br>
+  <br><h4>RFC Cliente: </h4><input type="text" name="Cliente">
+  <h4>Fecha: </h4>
+  <script type="text/javascript">
+var currentTime = new Date();
+var month = currentTime.getMonth() + 1;
+var day = currentTime.getDate();
+var year = currentTime.getFullYear();
+document.write(day + "/" + month + "/" + year);
+</script>
+  <!-- Fecha: <br><input type="text" name="Fecha" value=""><br> -->
 <div id="tablita" style="height:400px; overflow-y: scroll;">
   <table class = "table table-striped" id ="TablaFactura">
 	 <thead>
@@ -59,8 +67,8 @@
   <a data-toggle="modal" href="#example" class="btn btn-info">Buscar Producto</a>
 
 <div  style="float: right; margin-right:190px">
-  Subtotal: <label id="subtotal">0</label><br>
-  Pago: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="Pago"><br>
+  <label style="font-size:16pt; display:inline-block;">Subtotal:</label> <label id="subtotal" style="font-size:20pt; color:green; display:inline-block;">$ 0.00</label><br>
+  <label style="font-size:16pt; display:inline-block;">Pago:&nbsp&nbsp&nbsp&nbsp</label><input type="text" name="Pago"><br>
  </div>
 <br>
 <br>
@@ -171,7 +179,7 @@ function actualizarTotal()
     var costo=parseFloat(tableFactura.rows[i].cells[3].innerHTML);
     total = parseFloat(total) + parseFloat(costo);
   }
-  document.getElementById("subtotal").innerHTML = total.toFixed(2);
+  document.getElementById("subtotal").innerHTML = "$ " + total.toFixed(2);
   //alert(total);
 
 }

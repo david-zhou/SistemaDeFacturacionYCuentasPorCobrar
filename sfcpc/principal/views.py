@@ -19,9 +19,9 @@ from principal.models import Clientes
 def v_index(request):
 	return render_to_response("index.html" , context_instance = RequestContext(request))
 
-def v_Factura(request):
+def v_Factura(request, id_Cliente, RFC_Cliente):
 	p = Producto.objects.raw("Select * FROM principal_producto WHERE Activo = 1")
-	return render_to_response("Factura.html" ,{"productos":p}, context_instance = RequestContext(request))
+	return render_to_response("Factura.html" ,{"productos":p, "rfc":RFC_Cliente, "id_Cliente":id_Cliente}, context_instance = RequestContext(request))
 
 def v_Clientes(request):
 		return render_to_response("Clientes.html" , context_instance = RequestContext(request))
@@ -71,6 +71,13 @@ def v_Seleccionar_ClienteBaja(request,Nombre_Cliente,RFC_Cliente):
 	else:
 		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE (Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"') AND Activo = 1")
 	return render_to_response("Seleccionar_ClienteBaja.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
+
+def v_Seleccionar_ClienteFacturacion(request,Nombre_Cliente,RFC_Cliente):
+	if Nombre_Cliente =='null' and RFC_Cliente == 'null':
+		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE Activo = 1")
+	else:
+		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE (Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"') AND Activo = 1")
+	return render_to_response("Seleccionar_ClienteFacturacion.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
 
 
 def v_Clientes_Cambio(request, id_Cliente):

@@ -1,0 +1,55 @@
+{% extends "Base.html" %}
+
+{% block titulo %} Seleccionar Cliente  {% endblock titulo %}
+{%block FacturacionActivo%}active{%endblock FacturacionActivo%}
+{% block contenido %}
+<div class="containter" style="margin-left:30px; margin-top:20px" >
+  Nombre:<br><input type="text" name="Nombre" id="nom"><br>
+  RFC:<br><input type="text" name="RFC" id="RFC"><br>
+   <table class = "table table-striped">
+  <thead>
+    <tr>
+      <th>RFC</th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Estado Ciudad</th>
+      <th>Calle</th>
+      <th></th>
+    </tr>
+  </thead>
+<tbody>
+    {% for Client in Cliente %}
+    <tr>
+      <td> {{ Client.RFC }} </td>
+      <td> {{ Client.Nombres }} </td>
+      <td> {{ Client.Apellidos}} </td>
+      <td> {{ Client.Estado_Ciudad }} </td>
+      <td> {{ Client.Calle }} </td>
+      <td> <a href ="/Factura/{{Client.Clave_Cliente}}+{{Client.RFC}}" class="btn btn-success">Seleccionar</a></td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan = "5"> No se encuentran clientes. </td>
+    </tr>
+  {% endfor %}
+</tbody>
+</table>    
+<a class="btn btn-primary" onClick="link()">Buscar Cliente</a>
+</div>
+<script type="text/javascript">
+function link()
+{
+  var nombre=document.getElementById('nom').value;
+  var rfc = document.getElementById('RFC').value;
+  if(!nombre && !rfc)
+  {
+  window.location.href='null+null';
+  }
+  else
+  {
+  window.location.href=nombre+'+'+rfc;    
+  }
+
+}
+</script>           
+{% endblock contenido %}

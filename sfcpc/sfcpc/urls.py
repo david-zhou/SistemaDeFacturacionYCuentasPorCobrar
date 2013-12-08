@@ -6,7 +6,7 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
 	url(r'^$','principal.views.v_index'),
-	url(r'^Factura/$','principal.views.v_Factura'),
+	url(r'^Factura/(?P<id_Cliente>\d+)?\+?(?P<RFC_Cliente>\w+)?','principal.views.v_Factura'),
     url(r'^Clientes/$', 'principal.views.v_Clientes'),
     url(r'^Pagos/$', 'principal.views.v_Pagos'),
     url(r'^Productos/$', 'principal.views.v_Productos'),
@@ -23,7 +23,8 @@ urlpatterns = patterns('',
     url(r'^Pagos_Factura/$', 'principal.views.v_Pagos_Factura'),
     url(r'^Pagos_Clientes/$', 'principal.views.v_Pagos_Clientes'),
     url(r'^Agregar_Estado_Ciudad/$', 'principal.views.v_Agregar_Estado_Ciudad'),
-    # Examples:
+    url(r'^Seleccionar_ClienteFacturacion/(?P<Nombre_Cliente>\w+)?\+?(?P<RFC_Cliente>\w+)?$','principal.views.v_Seleccionar_ClienteFacturacion'),
+# Examples:
     # url(r'^$', 'sfcpc.views.home', name='home'),
     # url(r'^sfcpc/', include('sfcpc.foo.urls')),
 
