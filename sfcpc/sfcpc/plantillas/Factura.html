@@ -33,12 +33,16 @@ document.getElementById("clienteTextBox").innerHTML=rfc;
 			<th>Cantidad</th>
 			<th>Precio</th>
 			<th>Total</th>
+			<th></th>
 		</tr>
 	 </thead>
     <tbody>
     </tbody>
   </table>
 </div>
+
+
+
 
     <div id="example" class="modal hide fade in" style="display: none; ">  
     <div class="modal-header">  
@@ -67,6 +71,31 @@ document.getElementById("clienteTextBox").innerHTML=rfc;
   <a href="#" class="btn" data-dismiss="modal">Cerrar</a>  
 </div>  
 </div>  
+
+
+
+    <div id="ModificarCantidad" class="modal hide fade in" style="display: none; ">  
+    <div class="modal-header">  
+    <a class="close" data-dismiss="modal">×</a>  
+  <h3>Modificar Cantidad</h3>  
+</div>  
+<div class="modal-body">  
+  Cantidad:<br><input type="text" name="Cantidad" id="NuevaCantidad"><br>               
+</div>  
+<div class="modal-footer">  
+  <a onClick="Cantidad()" class="btn btn-success">Cambiar Cantidad</a>  
+  <a href="#" class="btn" data-dismiss="modal">Cerrar</a>  
+</div>  
+</div> 
+
+
+
+
+
+
+
+
+
   <a data-toggle="modal" href="#example" class="btn btn-info">Buscar Producto</a>
 
 <div  style="float: right; margin-right:190px">
@@ -133,25 +162,33 @@ function link()
 }
 function AgregarProducto(Clave,Nombre,Precio)
 {
+	var Bandera;
     var Borrar = document.createElement("input");
     var Incrementar = document.createElement("input");
     var Decrementar = document.createElement("input");
+    var Modificar = document.createElement("input")
     Borrar.setAttribute("type", "Button");
     Borrar.setAttribute("value", "Borrar");
     Borrar.setAttribute("name", "Button");
     Borrar.setAttribute("class", "btn btn-danger");
-    Incrementar.setAttribute("type", "Button");
-    Incrementar.setAttribute("value", "+");
-    Incrementar.setAttribute("name", "Button");
-    Incrementar.setAttribute("class", "btn");
-    Decrementar.setAttribute("type", "Button");
-    Decrementar.setAttribute("value", "-");
-    Decrementar.setAttribute("name", "Button");
-    Decrementar.setAttribute("class", "btn");
-    Incrementar.setAttribute("onClick","IncrementarCantidad(this)");
-    Decrementar.setAttribute("onClick","DecrementarCantidad(this)");
+    Modificar.setAttribute("type", "Button");
+    Modificar.setAttribute("value", "Modificar");
+    Modificar.setAttribute("class", "btn");
+    Modificar.setAttribute("data-toggle","modal")
+    Modificar.setAttribute("onClick","Modi(this)");
     Borrar.setAttribute("onClick","Borrar(this)");
     var tableFactura=document.getElementById("TablaFactura");
+    for(var i = 0; i < TablaFactura.rows.length; i++)
+    	if(tableFactura.rows[i].cells[0].innerHTML == Clave)
+    	{
+    		Bandera = true;
+    		break;
+    	}
+    if(Bandera)
+    {
+    	alert("El producto ya fue agregado a la factura.");
+    }
+    else{
     var row = tableFactura.insertRow(-1);
     var cellClave=row.insertCell(0);
     var cellNombre=row.insertCell(1);
@@ -165,11 +202,13 @@ function AgregarProducto(Clave,Nombre,Precio)
     var precioJ = parseFloat(Precio);
     cellPrecio.innerHTML = precioJ.toFixed(2);
     cellTotal.innerHTML = precioJ.toFixed(2);
-    cellBotones.appendChild(Decrementar);
-    cellBotones.appendChild(Incrementar);
+    Modificar.setAttribute("id", Clave);
+    cellBotones.appendChild(Modificar);
     cellBotones.appendChild(Borrar);
     actualizarTotal();
 
+    }
+    
 }
 function actualizarTotal()
 {
@@ -181,33 +220,35 @@ function actualizarTotal()
   //alert(l);
   for(var i=1;i<l;i++)
   {
-    var costo=parseFloat(tableFactura.rows[i].cells[3].innerHTML);
+    var costo=parseFloat(tableFactura.rows[i].cells[4].innerHTML);
     total = parseFloat(total) + parseFloat(costo);
   }
   document.getElementById("subtotal").innerHTML = "$ " + total.toFixed(2);
   //alert(total);
 
 }
-function IncrementarCantidad(posicion)
-{
-  var tableFactura=document.getElementById("TablaFactura");
-  var rowIndex = posicion.parentNode.parentNode.rowIndex;
-  tableFactura.rows[rowIndex].cells[1].innerHTML = (parseFloat(tableFactura.rows[rowIndex].cells[1].innerHTML) + 1).toFixed(3);
-  tableFactura.rows[rowIndex].cells[3].innerHTML = (parseFloat(tableFactura.rows[rowIndex].cells[1].innerHTML) *
-  parseFloat(tableFactura.rows[rowIndex].cells[2].innerHTML)).toFixed(2);
-  actualizarTotal();
+var rowCambio = 0;
+function Modi (posicion) {
+	 var tableFactura=document.getElementById("TablaFactura");
+	 var rowIndex = posicion.parentNode.parentNode.rowIndex;
+	 rowCambio = rowIndex;
+	  $('#ModificarCantidad').modal('show');
+	
 }
-function DecrementarCantidad(posicion)
+function Cantidad(posicion)
 {
-  var tableFactura=document.getElementById("TablaFactura");
-  var rowIndex = posicion.parentNode.parentNode.rowIndex;
-  if(!(parseInt(tableFactura.rows[rowIndex].cells[1].innerHTML) - 1 < 1))
-  {
-    tableFactura.rows[rowIndex].cells[1].innerHTML = (parseFloat(tableFactura.rows[rowIndex].cells[1].innerHTML) - 1).toFixed(3);
-    tableFactura.rows[rowIndex].cells[3].innerHTML = (parseFloat(tableFactura.rows[rowIndex].cells[1].innerHTML) *
-    parseFloat(tableFactura.rows[rowIndex].cells[2].innerHTML)).toFixed(2);
-    actualizarTotal();
-  }
+
+	var tableFactura=document.getElementById("TablaFactura");
+	var textCambio = document.getElementById("NuevaCantidad");
+
+	tableFactura.rows[rowCambio].cells[2].innerHTML = parseFloat(textCambio.value).toFixed(2);
+
+
+	tableFactura.rows[rowCambio].cells[4].innerHTML = (parseFloat(tableFactura.rows[rowCambio].cells[2].innerHTML) *
+  parseFloat(tableFactura.rows[rowCambio].cells[3].innerHTML)).toFixed(2);
+
+
+	actualizarTotal();
 }
 function Borrar(posicion)
 {
