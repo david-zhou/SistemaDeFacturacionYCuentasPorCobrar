@@ -65,6 +65,10 @@ def v_Seleccionar_Cliente(request,Nombre_Cliente,RFC_Cliente):
 		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE (Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"') AND Activo = 1")
 	return render_to_response("Seleccionar_Cliente.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
 
+def v_Generar_Factura(request, datos):
+	return render_to_response("Seleccionar_ClienteFacturacion.html", {"arreglo":datos}, context_instance = RequestContext(request))
+
+
 def v_Seleccionar_ClienteBaja(request,Nombre_Cliente,RFC_Cliente):
 	if Nombre_Cliente =='null' and RFC_Cliente == 'null':
 		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE Activo = 1")

@@ -27,6 +27,8 @@ urlpatterns = patterns('',
     url(r'^Reportes/$', 'principal.views.v_Reportes'),
     url(r'^Reporte_Facturas/$', 'principal.views.v_Reporte_Facturas'),
     url(r'^Reporte_Estado/$', 'principal.views.v_Reporte_Estado'),
+    url(r'^Generar_Factura/(?P<datos>[\w,]+)$', 'principal.views.v_Generar_Factura'),
+    
 # Examples:
     # url(r'^$', 'sfcpc.views.home', name='home'),
     # url(r'^sfcpc/', include('sfcpc.foo.urls')),
