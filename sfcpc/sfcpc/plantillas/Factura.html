@@ -28,6 +28,7 @@ document.getElementById("clienteTextBox").innerHTML=rfc;
   <table class = "table table-striped" id ="TablaFactura">
 	 <thead>
 		<tr>
+      <th>Clave</th>
 			<th>Nombre</th>
 			<th>Cantidad</th>
 			<th>Precio</th>
@@ -111,7 +112,7 @@ function link()
       element.setAttribute("value", "Seleccionar");
       element.setAttribute("name", "Button");
       element.setAttribute("class", "btn");
-      element.setAttribute("onClick","AgregarProducto('{{p.Nombre}}','{{p.Precio}}')")
+      element.setAttribute("onClick","AgregarProducto('{{p.Clave_Producto}}','{{p.Nombre}}','{{p.Precio}}')");
       var row=table.insertRow(-1);
       var cellClave=row.insertCell(0);
       var cellNombre=row.insertCell(1);
@@ -130,7 +131,7 @@ function link()
 
   {% endfor %}
 }
-function AgregarProducto(Nombre,Precio)
+function AgregarProducto(Clave,Nombre,Precio)
 {
     var Borrar = document.createElement("input");
     var Incrementar = document.createElement("input");
@@ -152,11 +153,13 @@ function AgregarProducto(Nombre,Precio)
     Borrar.setAttribute("onClick","Borrar(this)");
     var tableFactura=document.getElementById("TablaFactura");
     var row = tableFactura.insertRow(-1);
-    var cellNombre=row.insertCell(0);
-    var cellCantidad=row.insertCell(1);
-    var cellPrecio=row.insertCell(2);
-    var cellTotal=row.insertCell(3);
-    var cellBotones = row.insertCell(4);
+    var cellClave=row.insertCell(0);
+    var cellNombre=row.insertCell(1);
+    var cellCantidad=row.insertCell(2);
+    var cellPrecio=row.insertCell(3);
+    var cellTotal=row.insertCell(4);
+    var cellBotones = row.insertCell(5);
+    cellClave.innerHTML = Clave;
     cellNombre.innerHTML = Nombre;
     cellCantidad.innerHTML = (1).toFixed(3);
     var precioJ = parseFloat(Precio);
