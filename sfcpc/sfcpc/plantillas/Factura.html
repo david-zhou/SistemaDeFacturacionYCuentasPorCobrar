@@ -12,7 +12,7 @@
                     text-align: left;
                     ">
           Facturar</h6>
-  <br><h4>RFC Cliente: </h4><input type="text" name="Cliente">
+  <br><h4>RFC Cliente: </h4><label id="clienteTextBox" style="font-size:12pt; display:inline-block;">Cliente</label>&nbsp&nbsp&nbsp&nbsp <a href="/Seleccionar_ClienteFacturacion/" class="btn btn-success">Seleccionar cliente</a> 
   <h4>Fecha: </h4>
   <script type="text/javascript">
 var currentTime = new Date();
@@ -20,6 +20,8 @@ var month = currentTime.getMonth() + 1;
 var day = currentTime.getDate();
 var year = currentTime.getFullYear();
 document.write(day + "/" + month + "/" + year);
+var rfc="{{rfc}}";
+document.getElementById("clienteTextBox").innerHTML=rfc;
 </script>
   <!-- Fecha: <br><input type="text" name="Fecha" value=""><br> -->
 <div id="tablita" style="height:400px; overflow-y: scroll;">
