@@ -18,11 +18,10 @@ document.getElementById("result").value=estatus
 
 <p>Estado de las facturas:</p>
 <form>
-<input type="radio" name="Seleccion" onclick="displayResult(this.value)" value="T">Todas<br>
-<input type="radio" name="Seleccion" onclick="displayResult(this.value)" value="C">Canceladas<br>
-<input type="radio" name="Seleccion" onclick="displayResult(this.value)" value="P">Pendientes<br>
-<input type="radio" name="Seleccion" onclick="displayResult(this.value)" value="L">Liquidadas<br><br>
-Your favorite browser is: <input type="text" id="result">
+<input type="radio" name="Seleccion" id="T" value="T" checked="checked">Todas<br>
+<input type="radio" name="Seleccion" id="C" value="C">Canceladas<br>
+<input type="radio" name="Seleccion" id="P" value="P">Pendientes<br>
+<input type="radio" name="Seleccion" id="L" value="L">Liquidadas<br><br>
 
 
 <br>
@@ -38,24 +37,21 @@ Fecha final:<br><input type="date" name="FechaFinal" id="FechaFinal"><br>
       <th>Monto</th>
       <th>Saldo</th>
       <th>Status</th>
-      <th>Tipo de cambio</th>
-      
-    </tr>
+      </tr>
   </thead>
 <tbody>
     {% for f in Facturas %}
     <tr>
       <td> {{ f.Numero_Factura }} </td>
-      <td>{{ f.Numero_Factura }}</td>
+      <td> {{ f.RFC }}</td>
       <td> {{ f.Fecha_Hora }} </td>
       <td> {{ f.Monto }} </td>
       <td> {{ f.Saldo }} </td>
-      <td> {{ f.Status }} </td>
-      <td> {{ f.Tipo_Cambio }} </td>
+      <td> {{ f.Estatus }} </td>
     </tr>
     {% empty %}
     <tr>
-      <td colspan = "7"> No hay facturas. </td>
+      <td colspan = "6"> No hay facturas. </td>
     </tr>
   {% endfor %}
 </tbody>
@@ -66,9 +62,20 @@ Fecha final:<br><input type="date" name="FechaFinal" id="FechaFinal"><br>
 <script type="text/javascript">
 function link()
 {
+
   var FInicio =document.getElementById('FechaInicio').value;
   var FFinal = document.getElementById('FechaFinal').value;
-  var clave = document.getElementById('result').value;
+  var clave;
+  if(document.getElementById("T").checked)
+    clave="T";
+  else if(document.getElementById("C").checked)
+    clave="C";
+    else if(document.getElementById("P").checked)
+    clave="P";
+    else if(document.getElementById("L").checked)
+    clave="L";
+
+
   if(!FInicio && !FFinal)
   {
   window.location.href='null+null+null';
