@@ -15,6 +15,7 @@ from principal.models import Pagos
 from principal.models import Estado_Ciudad
 from principal.forms import Estado_CiudadForm
 from principal.models import Clientes
+from datetime import datetime
 
 def v_index(request):
 	return render_to_response("index.html" , context_instance = RequestContext(request))
@@ -66,6 +67,40 @@ def v_Seleccionar_Cliente(request,Nombre_Cliente,RFC_Cliente):
 	return render_to_response("Seleccionar_Cliente.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
 
 def v_Generar_Factura(request, datos):
+	arreglo = datos.split(",")
+	fecha = datetime.now()
+	# 0 id cliente
+	# fecha hora
+	# 1 monto
+	# 2 saldo
+	# status
+	# tipo cambio
+	if arreglo[3]=='D':
+		# hacer la conversion
+		dolar = Dolar_peso.objects.raw("Select top 1 valor from principal_Dolar_peso order by fecha desc")
+		dolarFloat = float(dolar[0].valor)
+		saldo = float(arreglo[2])
+		saldo = saldo * dolarFloat
+	else:
+		saldo = float(arreglo[2])
+
+	clave= int(arreglo[0])
+	monto = float(arreglo[1][1:])
+	if saldo >= monto:
+		saldo=monto
+		status = 'L'
+	else:
+		status = 'P'
+
+	f = Factura(Clave_Cliente_id=clave, Fecha_Hora=fecha, Monto=monto, Saldo=saldo, Status=status, Tipo_Cambio='P')
+	f.save()
+
+	# 3 P|D
+	#
+	# 4 clave producto
+	# 5 cantidad
+	# 6 precio unitario
+	
 	return HttpResponseRedirect("/Seleccionar_ClienteFacturacion")
 
 

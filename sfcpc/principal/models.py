@@ -68,7 +68,7 @@ class Factura(models.Model):
 	Tipo_Factura = (
                 ('C','Cancelada'),
                 ('L','Liquidada'),
-                ('P','Pagada'),
+                ('P','Pendiente'),
         )
 	Status = models.CharField(max_length=1,choices=Tipo_Factura)
 	Pesos_Dolares = (
