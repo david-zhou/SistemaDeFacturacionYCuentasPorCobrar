@@ -1,0 +1,55 @@
+{% extends "Reportes.html" %}
+
+{% block titulo %} Reporte de estado de cuentas  {% endblock titulo %}
+{%block ReportesEstado%}active{%endblock ReportesEstado%}
+{% block contenidoReportes %}
+<div class="containter" style="margin-left:30px; margin-top:20px" >
+  Clave del Producto:<br><input type="text" name="Clave" id="clave"><br>
+  Nombre:<br><input type="text" name="Nombre" id="nom"><br>
+   <table class = "table table-striped">
+  <thead>
+    <tr>
+      <th>Clave Producto</th>
+      <th>Tipo</th>
+      <th>Nombre</th>
+      <th>Unidad de medida</th>
+      <th>Precio</th>
+      <th></th>
+    </tr>
+  </thead>
+<tbody>
+    {% for p in producto %}
+    <tr>
+      <td> {{ p.Clave_Producto }} </td>
+      <td> {{ p.Tipo}} </td>
+      <td> {{ p.Nombre }} </td>
+      <td> {{ p.Unidad_de_medida }} </td>
+      <td> {{ p.Precio }} </td>
+      <td> <a href ="/Productos_Baja/{{p.Clave_Producto}}" class="btn btn-success">Seleccionar</a></td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan = "4"> No se encuentran productos. </td>
+    </tr>
+  {% endfor %}
+</tbody>
+</table>    
+<a class="btn btn-primary" onClick="link()">Buscar Producto</a>
+</div>
+<script type="text/javascript">
+function link()
+{
+  var nombre=document.getElementById('nom').value;
+  var clave = document.getElementById('clave').value;
+  if(!nombre && !clave)
+  {
+  window.location.href='null+null';
+  }
+  else
+  {
+  window.location.href=nombre+'+'+clave;    
+  }
+
+}
+</script>           
+{% endblock contenidoReportes %}

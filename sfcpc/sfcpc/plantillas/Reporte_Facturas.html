@@ -1,0 +1,83 @@
+{% extends "Reportes.html" %}
+
+{% block titulo %} Reporte de estado de cuentas  {% endblock titulo %}
+{%block ReportesFactura%}active{%endblock ReportesFactura%}
+{% block contenidoReportes %}
+<div class="containter" style="margin-left:30px; margin-top:20px" >
+<script>
+function displayResult(estatus)
+{
+document.getElementById("result").value=estatus
+}
+</script>
+</head>
+<script language="JavaScript" src="datepicker.js" type="text/javascript"></script>
+<link href="datepicker.css" rel="stylesheet" />
+
+<body>
+
+<p>Estado de las facturas:</p>
+<form>
+<input type="radio" name="Seleccion" onclick="displayResult(this.value)" value="T">Todas<br>
+<input type="radio" name="Seleccion" onclick="displayResult(this.value)" value="C">Canceladas<br>
+<input type="radio" name="Seleccion" onclick="displayResult(this.value)" value="P">Pendientes<br>
+<input type="radio" name="Seleccion" onclick="displayResult(this.value)" value="L">Liquidadas<br><br>
+Your favorite browser is: <input type="text" id="result">
+
+
+<br>
+Fecha de inicio:<br><input type="date" name="FechaInicio" id="FechaInicio"><br>
+Fecha final:<br><input type="date" name="FechaFinal" id="FechaFinal"><br>
+
+   <table class = "table table-striped">
+  <thead>
+    <tr>
+      <th>Numero de factura</th>
+      <th>RFC</th>
+      <th>Fecha</th>
+      <th>Monto</th>
+      <th>Saldo</th>
+      <th>Status</th>
+      <th>Tipo de cambio</th>
+      
+    </tr>
+  </thead>
+<tbody>
+    {% for f in Facturas %}
+    <tr>
+      <td> {{ f.Numero_Factura }} </td>
+      <td>{{ f.Numero_Factura }}</td>
+      <td> {{ f.Fecha_Hora }} </td>
+      <td> {{ f.Monto }} </td>
+      <td> {{ f.Saldo }} </td>
+      <td> {{ f.Status }} </td>
+      <td> {{ f.Tipo_Cambio }} </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan = "7"> No hay facturas. </td>
+    </tr>
+  {% endfor %}
+</tbody>
+</table>    
+<a class="btn btn-primary" onClick="link()">Buscar Facturas</a>
+</form>
+</div>
+<script type="text/javascript">
+function link()
+{
+  var FInicio =document.getElementById('FechaInicio').value;
+  var FFinal = document.getElementById('FechaFinal').value;
+  var clave = document.getElementById('result').value;
+  if(!FInicio && !FFinal)
+  {
+  window.location.href='null+null+null';
+  }
+  else
+  {
+  window.location.href=FInicio+'+'+FFinal+'+'+clave;    
+  }
+
+}
+</script>           
+{% endblock contenidoReportes %}

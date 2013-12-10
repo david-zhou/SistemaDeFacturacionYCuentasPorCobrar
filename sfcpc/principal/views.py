@@ -154,3 +154,21 @@ def v_Pagos_Factura(request):
 
 def v_Pagos_Clientes(request):
 	return render_to_response("Pagos_Clientes.html" , context_instance = RequestContext(request))
+
+def v_Reportes(request):
+	return render_to_response("Reportes.html" , context_instance = RequestContext(request))
+
+def v_Reporte_Facturas(request,FechaInicio,FechaFinal,Status):
+	if FechaInicio =='null' and FechaFinal == 'null':
+		Facturas = Factura.objects.raw("Select C.Clave_Cliente, C.RFC, F.Numero_Factura, C.Clave_Cliente, datetime(Fecha_Hora) as Fecha_Hora, Monto, Saldo, Status, Tipo_Cambio  FROM principal_Factura F INNER JOIN principal_Clientes C ON C.Clave_Cliente= F.Clave_Cliente_id ")
+	elif Status=='T':
+		Facturas = Factura.objects.raw("Select C.Clave_Cliente, C.RFC, F.Numero_Factura, C.Clave_Cliente, F.Fecha_Hora, F.Monto, F.Saldo, F.Status, F.Tipo_Cambio  FROM principal_Factura F INNER JOIN principal_Clientes C ON C.Clave_Cliente= F.Clave_Cliente_id WHERE Fecha_Hora >'"'%%%%'+str(FechaInicio)+'%%%%'"' and Fecha_Hora <'"'%%%%'+str(FechaFinal)+'%%%%'"'")
+	elif Status=='C':
+		Facturas = Clientes.objects.raw("Select * FROM principal_Factura WHERE Tipo_Factura = 'C' AND Fecha_Hora >'"'%%%%'+str(FechaInicio)+'%%%%'"' and Fecha_Hora <'"'%%%%'+str(FechaFinal)+'%%%%'"'")
+	else:
+		Facturas = Factura.objects.raw("Select F.Numero_Factura, datetime(F.Fecha_Hora) as Fecha_Hora, F.Monto, F.Saldo, F.Status, F.Tipo_Cambio  FROM principal_Factura F WHERE Fecha_Hora >'12-12-11' and Fecha_Hora <'12-12-14'")
+
+	return render_to_response("Reporte_Facturas.html", {"Facturas":Facturas} , context_instance = RequestContext(request))
+
+def v_Reporte_Estado(request):
+	return render_to_response("Reporte_Estado.html" , context_instance = RequestContext(request))

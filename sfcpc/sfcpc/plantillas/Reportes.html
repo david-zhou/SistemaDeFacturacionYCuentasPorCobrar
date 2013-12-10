@@ -1,0 +1,31 @@
+{% extends "Base.html" %}
+
+{% block titulo %} Reportes {% endblock titulo %}
+{%block ReportesActivo%}active{%endblock ReportesActivo%}
+{% block contenido %}
+<meta charset="utf-8">
+<div class="containter" style="margin-left:30px; margin-top:20px" >
+
+           <h6 style ="font-family:  'Hoefler Text', Georgia, 'Times New Roman', serif;
+                    font-weight: normal;
+                    font-size: 1.4em;
+                    letter-spacing: .2em;
+                    line-height: 1.1em;
+                    margin:0px;
+                    text-align: left;
+                    ">
+          Reportes </h6>
+        
+          <ul class="nav nav-tabs">
+          <li class="{%block ReportesFactura%}{%endblock ReportesFactura%}">
+            <a href="/Reporte_Facturas/">Reportes de facturas</a>
+          </li>
+          <li class="{%block ReportesEstado%}{%endblock ReportesEstado%}">
+            <a href="/Reporte_Estado">Reportes de estado de cuenta</a></li>
+
+
+    </ul>
+ </div>
+ {% block contenidoReportes %}
+{% endblock contenidoReportes %}
+{% endblock contenido %}
