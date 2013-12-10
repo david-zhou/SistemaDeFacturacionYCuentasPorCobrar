@@ -66,7 +66,7 @@ def v_Seleccionar_Cliente(request,Nombre_Cliente,RFC_Cliente):
 	return render_to_response("Seleccionar_Cliente.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
 
 def v_Generar_Factura(request, datos):
-	return render_to_response("Seleccionar_ClienteFacturacion.html", {"arreglo":datos}, context_instance = RequestContext(request))
+	return HttpResponseRedirect("/Seleccionar_ClienteFacturacion")
 
 
 def v_Seleccionar_ClienteBaja(request,Nombre_Cliente,RFC_Cliente):

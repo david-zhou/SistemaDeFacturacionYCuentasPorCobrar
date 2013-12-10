@@ -88,29 +88,68 @@ document.getElementById("clienteTextBox").innerHTML=rfc;
 </div>  
 </div> 
 
-
-
-
-
-
-
-
-
   <a data-toggle="modal" href="#example" class="btn btn-info">Buscar Producto</a>
 
 <div  style="float: right; margin-right:190px">
   <label style="font-size:16pt; display:inline-block;">Subtotal:</label> <label id="subtotal" style="font-size:20pt; color:green; display:inline-block;">$ 0.00</label><br>
-  <label style="font-size:16pt; display:inline-block;">Pago:&nbsp&nbsp&nbsp&nbsp</label><input type="text" name="Pago"><br>
+  <label style="font-size:16pt; display:inline-block;">Pago:&nbsp&nbsp&nbsp&nbsp</label><input type="text" name="Pago" id="pagoTextBox" style="font-size:20pt; color:green; display:inline-block;height:30px"><br>
+
+
+
  </div>
+
+<div class="radio" style="float: right; margin-right: 20px">
+  <label style="font-size:16pt; display:inline-block;">
+    <input type="radio" name="Moneda" id="P" value="P" checked="checked" >
+    Pesos
+  </label>
+  <br>
+  <label style="font-size:16pt; display:inline-block;">
+    <input type="radio" name="Moneda" id="D" value="D">
+    Dolares
+  </label>
+</div>
+
+
 <br>
 <br>
-<input type="submit" value = "Generar Factura" class="btn btn-primary">
+<a onClick="generarFactura();" class="btn btn-primary">Generar Factura</a>
 
  </div>
 
 <script>
+function generarFactura()
+{
+
+  var arreglo = new Array();
+  arreglo[0]="{{id_Cliente}}"; // id cliente
+  arreglo[1]=document.getElementById("subtotal").innerHTML; // monto
+  arreglo[2]=document.getElementById("pagoTextBox").value; // saldo
+  if(document.getElementById("P").checked)
+  {
+    arreglo[3]="P"; //peso 
+  }
+  else
+  {
+    arreglo[3]="D"; //dolar
+  }
+
+  var table=document.getElementById("TablaFactura");
+  var rowCount = table.rows.length;
+  for(var i=1;i<rowCount;i++)
+  {
+    var prod=table.rows[i].cells[0].innerHTML;
+    var cant=table.rows[i].cells[2].innerHTML;
+    var prec=table.rows[i].cells[3].innerHTML;
+    arreglo[3*i+1]=prod;
+    arreglo[3*i+2]=cant;
+    arreglo[3*i+3]=prec;
+  }
+  window.location.href="/Generar_Factura/"+arreglo;
+}
 function link()
 {
+
    var element = document.createElement("input");
 
      //Assign different attributes to the element.
@@ -223,7 +262,7 @@ function actualizarTotal()
     var costo=parseFloat(tableFactura.rows[i].cells[4].innerHTML);
     total = parseFloat(total) + parseFloat(costo);
   }
-  document.getElementById("subtotal").innerHTML = "$ " + total.toFixed(2);
+  document.getElementById("subtotal").innerHTML = "$" + total.toFixed(2);
   //alert(total);
 
 }
