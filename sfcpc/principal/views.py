@@ -94,7 +94,22 @@ def v_Generar_Factura(request, datos):
 
 	f = Factura(Clave_Cliente_id=clave, Fecha_Hora=fecha, Monto=monto, Saldo=saldo, Status=status, Tipo_Cambio='P')
 	f.save()
-
+	
+	numFac = Factura.objects.raw("Select Numero_Factura from principal_Factura order by Fecha_Hora desc")
+	numfac2 = int(numFac[0].Numero_Factura)
+	
+	l=int((len(arreglo)-4)/3)
+	i = 4
+	for x in range(0,l):
+		claveProd = arreglo[i]
+		i=i+1
+		cant = float(arreglo[i])
+		i=i+1
+		precio = float(arreglo[i])
+		i=i+1
+		df = Detalle_Factura(Numero_Factura_id=numfac2, Producto_id= claveProd, Cantidad = cant, Precio_Unitario = precio)
+		df.save()
+		
 	# 3 P|D
 	#
 	# 4 clave producto
