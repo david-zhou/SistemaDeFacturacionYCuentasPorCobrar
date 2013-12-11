@@ -3,6 +3,7 @@
 {% block titulo %} Reporte de estado de cuentas  {% endblock titulo %}
 {%block ReportesFactura%}active{%endblock ReportesFactura%}
 {% block contenidoReportes %}
+<head>
 <div class="containter" style="margin-left:30px; margin-top:20px" >
 <script>
 function displayResult(estatus)
@@ -10,9 +11,11 @@ function displayResult(estatus)
 document.getElementById("result").value=estatus
 }
 </script>
+<script language="javascript" type="text/javascript" src="datetimepicker.js">
+</script>
+
 </head>
-<script language="JavaScript" src="datepicker.js" type="text/javascript"></script>
-<link href="datepicker.css" rel="stylesheet" />
+
 
 <body>
 
@@ -27,7 +30,8 @@ document.getElementById("result").value=estatus
 <br>
 Fecha de inicio:<br><input type="date" name="FechaInicio" id="FechaInicio"><br>
 Fecha final:<br><input type="date" name="FechaFinal" id="FechaFinal"><br>
-
+Calis:<br>
+<input id="demo1" type="text" size="25"><a href="javascript:NewCal('demo1','ddmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br>
    <table class = "table table-striped">
   <thead>
     <tr>
