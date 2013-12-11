@@ -210,7 +210,7 @@ def v_Seleccionar_ProductoBaja(request,Nombre_Producto,Clave_Producto):
 		p = Producto.objects.raw("Select * FROM principal_producto WHERE (Nombre LIKE '"'%%%%'+str(Nombre_Producto)+'%%%%'"' OR Clave_Producto LIKE '"'%%%%'+str(Clave_Producto)+'%%%%'"') AND Activo = 1")
 	return render_to_response("Seleccionar_ProductoBaja.html", {"producto":p} , context_instance = RequestContext(request))
 
-def v_Pagos_Factura(request):
+def v_Pagos_Factura(request, RFC_Cliente, Pago, NumF, Monto, Moneda, Saldo):
 	M = Dolar_peso.objects.raw("Select * From principal_dolar_peso Order by Fecha desc")
 
 	if RFC_Cliente == 'null' and Pago == 'null' and NumF == 'null' and Monto == 'null' and Moneda == 'null':#cuando le das buscar sin poner nada
@@ -255,7 +255,7 @@ def v_Dolar(request):
 
 	return render_to_response("Dolar.html", {"formulario":formulario}, context_instance=RequestContext(request))
 
-def v_Pagos_Clientes(request):
+def v_Pagos_Clientes(request, RFC_Cliente, Pago, NumF, Monto, Moneda, Saldo):
 	#M = Dolar_peso.objects.get(fecha = '2013-12-08')
 	M = Dolar_peso.objects.raw("Select * From principal_dolar_peso Order by Fecha desc")
 
