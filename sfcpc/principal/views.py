@@ -298,21 +298,21 @@ def v_Reporte_Facturas(request,FechaInicio,FechaFinal,Status):
 	if FechaInicio =='null' and FechaFinal == 'null':
 		Facturas = Clientes.objects.raw("Select C.Clave_Cliente, C.RFC, F.Numero_Factura, C.Clave_Cliente, Fecha_Hora, Monto, Saldo, CASE F.Status WHEN 'C' THEN 'Cancelada' WHEN 'L' THEN 'Liquidada' WHEN 'P' THEN 'Pendiente' END as Estatus FROM principal_Factura F INNER JOIN principal_Clientes C ON C.Clave_Cliente= F.Clave_Cliente_id")
 	elif Status=='T':
-		Facturas = Clientes.objects.raw("Select C.Clave_Cliente, C.RFC, F.Numero_Factura, C.Clave_Cliente, Fecha_Hora, Monto, Saldo, CASE F.Status WHEN 'C' THEN 'Cancelada' WHEN 'L' THEN 'Liquidada' WHEN 'P' THEN 'Pendiente' END as Estatus FROM principal_Factura F INNER JOIN principal_Clientes C ON C.Clave_Cliente= F.Clave_Cliente_id WHERE Fecha_Hora >'"+FechaInicio+"' AND Fecha_Hora <'"+FechaFinal+"'")
+		Facturas = Clientes.objects.raw("Select C.Clave_Cliente, C.RFC, F.Numero_Factura, C.Clave_Cliente, Fecha_Hora, Monto, Saldo, CASE F.Status WHEN 'C' THEN 'Cancelada' WHEN 'L' THEN 'Liquidada' WHEN 'P' THEN 'Pendiente' END as Estatus FROM principal_Factura F INNER JOIN principal_Clientes C ON C.Clave_Cliente= F.Clave_Cliente_id WHERE Fecha_Hora >='"+FechaInicio+"' AND Fecha_Hora <='"+FechaFinal+"'")
 	elif Status=='C':
-		Facturas = Clientes.objects.raw("Select C.Clave_Cliente, C.RFC, F.Numero_Factura, C.Clave_Cliente, Fecha_Hora, Monto, Saldo, CASE F.Status WHEN 'C' THEN 'Cancelada' WHEN 'L' THEN 'Liquidada' WHEN 'P' THEN 'Pendiente' END as Estatus FROM principal_Factura F INNER JOIN principal_Clientes C ON C.Clave_Cliente= F.Clave_Cliente_id WHERE Fecha_Hora >'"+FechaInicio+"' AND Fecha_Hora <'"+FechaFinal+"' AND Status='C'")
+		Facturas = Clientes.objects.raw("Select C.Clave_Cliente, C.RFC, F.Numero_Factura, C.Clave_Cliente, Fecha_Hora, Monto, Saldo, CASE F.Status WHEN 'C' THEN 'Cancelada' WHEN 'L' THEN 'Liquidada' WHEN 'P' THEN 'Pendiente' END as Estatus FROM principal_Factura F INNER JOIN principal_Clientes C ON C.Clave_Cliente= F.Clave_Cliente_id WHERE Fecha_Hora >='"+FechaInicio+"' AND Fecha_Hora <='"+FechaFinal+"' AND Status='C'")
 	elif Status=='P':
-		Facturas = Clientes.objects.raw("Select C.Clave_Cliente, C.RFC, F.Numero_Factura, C.Clave_Cliente, Fecha_Hora, Monto, Saldo, CASE F.Status WHEN 'C' THEN 'Cancelada' WHEN 'L' THEN 'Liquidada' WHEN 'P' THEN 'Pendiente' END as Estatus FROM principal_Factura F INNER JOIN principal_Clientes C ON C.Clave_Cliente= F.Clave_Cliente_id WHERE Fecha_Hora >'"+FechaInicio+"' AND Fecha_Hora <'"+FechaFinal+"'AND Status='P'")
+		Facturas = Clientes.objects.raw("Select C.Clave_Cliente, C.RFC, F.Numero_Factura, C.Clave_Cliente, Fecha_Hora, Monto, Saldo, CASE F.Status WHEN 'C' THEN 'Cancelada' WHEN 'L' THEN 'Liquidada' WHEN 'P' THEN 'Pendiente' END as Estatus FROM principal_Factura F INNER JOIN principal_Clientes C ON C.Clave_Cliente= F.Clave_Cliente_id WHERE Fecha_Hora >='"+FechaInicio+"' AND Fecha_Hora <='"+FechaFinal+"'AND Status='P'")
 	elif Status=='L':
-		Facturas = Clientes.objects.raw("Select C.Clave_Cliente, C.RFC, F.Numero_Factura, C.Clave_Cliente, Fecha_Hora, Monto, Saldo, CASE F.Status WHEN 'C' THEN 'Cancelada' WHEN 'L' THEN 'Liquidada' WHEN 'P' THEN 'Pendiente' END as Estatus FROM principal_Factura F INNER JOIN principal_Clientes C ON C.Clave_Cliente= F.Clave_Cliente_id WHERE Fecha_Hora >'"+FechaInicio+"' AND Fecha_Hora <'"+FechaFinal+"' AND Status='L'")
+		Facturas = Clientes.objects.raw("Select C.Clave_Cliente, C.RFC, F.Numero_Factura, C.Clave_Cliente, Fecha_Hora, Monto, Saldo, CASE F.Status WHEN 'C' THEN 'Cancelada' WHEN 'L' THEN 'Liquidada' WHEN 'P' THEN 'Pendiente' END as Estatus FROM principal_Factura F INNER JOIN principal_Clientes C ON C.Clave_Cliente= F.Clave_Cliente_id WHERE Fecha_Hora >='"+FechaInicio+"' AND Fecha_Hora <='"+FechaFinal+"' AND Status='L'")
 	else:
 		Facturas = Clientes.objects.raw("Select C.Clave_Cliente, C.RFC, F.Numero_Factura, C.Clave_Cliente, Fecha_Hora, Monto, Saldo, CASE F.Status WHEN 'C' THEN 'Cancelada' WHEN 'L' THEN 'Liquidada' WHEN 'P' THEN 'Pendiente' END as Estatus FROM principal_Factura F INNER JOIN principal_Clientes C ON C.Clave_Cliente= F.Clave_Cliente_id")
 
 	return render_to_response("Reporte_Facturas.html", {"Facturas":Facturas} , context_instance = RequestContext(request))
 
 def v_Reporte_Estado(request,id_Cliente):
-	Facturas = Clientes.objects.raw("Select C.Clave_Cliente, C.RFC, F.Numero_Factura, C.Clave_Cliente, Fecha_Hora, Monto, Saldo, CASE F.Status WHEN 'C' THEN 'Cancelada' WHEN 'L' THEN 'Liquidada' WHEN 'P' THEN 'Pendiente' END as Estatus FROM principal_Factura F INNER JOIN principal_Clientes C ON C.Clave_Cliente= F.Clave_Cliente_id WHERE Clave_Cliente_id= '"+id_Cliente+"'")
-	Total= Factura.objects.raw("SELECT Numero_Factura, SUM(Saldo)-SUM(Monto) AS Total FROM principal_factura WHERE Clave_Cliente_id = 1")
+	Facturas = Clientes.objects.raw("Select C.Clave_Cliente, C.RFC, F.Numero_Factura, C.Clave_Cliente, Fecha_Hora, Monto, Saldo, CASE F.Status WHEN 'C' THEN 'Cancelada' WHEN 'L' THEN 'Liquidada' WHEN 'P' THEN 'Pendiente' END as Estatus FROM principal_Factura F INNER JOIN principal_Clientes C ON C.Clave_Cliente= F.Clave_Cliente_id WHERE Clave_Cliente_id= "+id_Cliente)
+	Total= Factura.objects.raw("SELECT Numero_Factura, (SUM(Monto)-SUM(Saldo)) AS Total FROM principal_factura WHERE Clave_Cliente_id = "+id_Cliente)
 	return render_to_response("Reporte_Estado.html", {"Facturas":Facturas,"Total":Total}, context_instance = RequestContext(request))
 
 

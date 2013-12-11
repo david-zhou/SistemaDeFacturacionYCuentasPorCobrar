@@ -3,7 +3,7 @@
 {%block ReportesEstado%}active{%endblock ReportesEstado%}
 {% block contenidoReportes %}
 <div class="containter" style="margin-left:30px; margin-top:20px" >
- <table class = "table table-striped">
+ <table class = "table table-striped" id= "Facturass">
   <thead>
     <tr>
       <th>Numero de factura</th>
@@ -32,23 +32,27 @@
 </tbody>
 </table> 
 <br>
-<table class = "table table-striped">
-  <thead>
-    <tr>
-      <th>Total</th>
-  </thead>
-<tbody>
-    {% for T in Total %}
-    <tr>
-      <td> {{ T.Total }} </td>
-    </tr>
-    {% empty %}
-    <tr>
-      <td colspan = "1"> No hay facturas. </td>
-    </tr>
-  {% endfor %}
-</tbody>
-</table> 
+
+<div  style="float: right; margin-right:190px">
+  <label style="font-size:16pt; display:inline-block;">Total:</label> <label id="total" style="font-size:20pt; color:red; display:inline-block;">$ 0.00</label><br>
+
+ </div>
+ <script type="text/javascript">
+  var l=document.getElementById('Facturass').getElementsByTagName('tr').length;
+  var tableFactura = document.getElementById("Facturass");
+  //alert(l);
+  var total = 0.0;
+  total=parseFloat(total);
+  //alert(l);
+  for(var i=1;i<l;i++)
+  {
+    total+=parseFloat(tableFactura.rows[i].cells[3].innerHTML)-parseFloat(tableFactura.rows[i].cells[4].innerHTML);
+  
+  }
+  document.getElementById("total").innerHTML = "$" + total.toFixed(2);
+  </script>
+
+
  <br>
  <a href = "/Seleccionar_ClienteReporte" class ="btn">Regresar</a>
 
@@ -67,5 +71,8 @@ function link()
   }
 
 }
+
+
+
 </script>           
 {% endblock contenidoReportes %}
