@@ -20,9 +20,9 @@ from datetime import datetime
 def v_index(request):
 	return render_to_response("index.html" , context_instance = RequestContext(request))
 
-def v_Factura(request, id_Cliente, RFC_Cliente):
+def v_Factura(request, id_Cliente, RFC_Cliente, Moroso, Dolar):
 	p = Producto.objects.raw("Select * FROM principal_producto WHERE Activo = 1")
-	return render_to_response("Factura.html" ,{"productos":p, "rfc":RFC_Cliente, "id_Cliente":id_Cliente}, context_instance = RequestContext(request))
+	return render_to_response("Factura.html" ,{"productos":p, "rfc":RFC_Cliente, "id_Cliente":id_Cliente, "Moroso":Moroso, "Dolar":Dolar}, context_instance = RequestContext(request))
 
 def v_Clientes(request):
 		return render_to_response("Clientes.html" , context_instance = RequestContext(request))
@@ -77,7 +77,7 @@ def v_Generar_Factura(request, datos):
 	# tipo cambio
 	if arreglo[3]=='D':
 		# hacer la conversion
-		dolar = Dolar_peso.objects.raw("Select top 1 valor from principal_Dolar_peso order by fecha desc")
+		dolar = Dolar_peso.objects.raw("Select fecha, valor from principal_Dolar_peso order by fecha desc")
 		dolarFloat = float(dolar[0].valor)
 		saldo = float(arreglo[2])
 		saldo = saldo * dolarFloat
@@ -129,9 +129,13 @@ def v_Seleccionar_ClienteBaja(request,Nombre_Cliente,RFC_Cliente):
 def v_Seleccionar_ClienteFacturacion(request,Nombre_Cliente,RFC_Cliente):
 	if Nombre_Cliente =='null' and RFC_Cliente == 'null':
 		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE Activo = 1")
+		Dolar = Dolar_peso.objects.raw("Select valor, fecha from principal_Dolar_peso order by fecha desc")
+		valor = Dolar[0].valor
 	else:
+		Dolar = Dolar_peso.objects.raw("Select valor, fecha from principal_Dolar_peso order by fecha desc")
+		valor = Dolar[0].valor
 		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE (Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"') AND Activo = 1")
-	return render_to_response("Seleccionar_ClienteFacturacion.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
+	return render_to_response("Seleccionar_ClienteFacturacion.html" ,{"Cliente":Cliente, "valor":valor}, context_instance = RequestContext(request))
 
 
 def v_Clientes_Cambio(request, id_Cliente):

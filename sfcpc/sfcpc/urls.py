@@ -6,7 +6,7 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
 	url(r'^$','principal.views.v_index'),
-	url(r'^Factura/(?P<id_Cliente>\d+)?\+?(?P<RFC_Cliente>\w+)?','principal.views.v_Factura'),
+	url(r'^Factura/(?P<id_Cliente>\d+)?\+?(?P<RFC_Cliente>\w+)?\+?(?P<Moroso>\w+)?\+?(?P<Dolar>[\w.]+)?','principal.views.v_Factura'),
     url(r'^Clientes/$', 'principal.views.v_Clientes'),
     url(r'^Pagos/$', 'principal.views.v_Pagos'),
     url(r'^Productos/$', 'principal.views.v_Productos'),

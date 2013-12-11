@@ -121,21 +121,54 @@ document.getElementById("clienteTextBox").innerHTML=rfc;
 function generarFactura()
 {
 
+  var table=document.getElementById("TablaFactura");
+  var rowCount = table.rows.length;
+  
+  if(rowCount<=1)
+  {
+    alert("Ingrese productos primero");
+    return;
+  }
+
   var arreglo = new Array();
   arreglo[0]="{{id_Cliente}}"; // id cliente
   arreglo[1]=document.getElementById("subtotal").innerHTML; // monto
-  arreglo[2]=document.getElementById("pagoTextBox").value; // saldo
+  var montito = arreglo[1].substring(1);
+  var monto = parseFloat(montito);
+
+  if(document.getElementById("pagoTextBox").value == "")
+  {
+    arreglo[2]="0";
+  }
+  else
+  {
+    arreglo[2]=document.getElementById("pagoTextBox").value; // saldo
+  }
+
   if(document.getElementById("P").checked)
   {
     arreglo[3]="P"; //peso 
+    var saldo = parseFloat(arreglo[2]);
   }
   else
   {
     arreglo[3]="D"; //dolar
+    var saldito = parseFloat(arreglo[2]);
+    var dolar = parseFloat("{{Dolar}}");
+    var saldo = saldito * dolar;
   }
-
-  var table=document.getElementById("TablaFactura");
-  var rowCount = table.rows.length;
+  if("{{Moroso}}"=="False")
+  {
+    
+  }
+  else
+  {
+    if(saldo<monto)
+    {
+      alert("Cliente moroso, debe pagar de contado");
+      return;
+    }
+  }
   for(var i=1;i<rowCount;i++)
   {
     var prod=table.rows[i].cells[0].innerHTML;
@@ -145,7 +178,9 @@ function generarFactura()
     arreglo[3*i+2]=cant;
     arreglo[3*i+3]=prec;
   }
+
   window.location.href="/Generar_Factura/"+arreglo;
+
 }
 function link()
 {
@@ -277,17 +312,25 @@ function Modi (posicion) {
 function Cantidad(posicion)
 {
 
-	var tableFactura=document.getElementById("TablaFactura");
-	var textCambio = document.getElementById("NuevaCantidad");
+  var tableFactura=document.getElementById("TablaFactura");
+  var textCambio = document.getElementById("NuevaCantidad");
+  if(parseFloat(textCambio.value).toFixed(2) <= 0 || textCambio.value == "")
+  {
+    alert("La cantidad no es valida.");
 
-	tableFactura.rows[rowCambio].cells[2].innerHTML = parseFloat(textCambio.value).toFixed(2);
+  }
+  else
+  {
 
 
-	tableFactura.rows[rowCambio].cells[4].innerHTML = (parseFloat(tableFactura.rows[rowCambio].cells[2].innerHTML) *
+  tableFactura.rows[rowCambio].cells[2].innerHTML = parseFloat(textCambio.value).toFixed(2);
+
+
+  tableFactura.rows[rowCambio].cells[4].innerHTML = (parseFloat(tableFactura.rows[rowCambio].cells[2].innerHTML) *
   parseFloat(tableFactura.rows[rowCambio].cells[3].innerHTML)).toFixed(2);
-
-
-	actualizarTotal();
+  $('#ModificarCantidad').modal('hide');
+  }
+  actualizarTotal();
 }
 function Borrar(posicion)
 {

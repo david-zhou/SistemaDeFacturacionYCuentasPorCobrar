@@ -25,7 +25,7 @@
       <td> {{ Client.Apellidos}} </td>
       <td> {{ Client.Estado_Ciudad }} </td>
       <td> {{ Client.Calle }} </td>
-      <td> <a href ="/Factura/{{Client.Clave_Cliente}}+{{Client.RFC}}" class="btn btn-success">Seleccionar</a></td>
+      <td> <a href ="/Factura/{{Client.Clave_Cliente}}+{{Client.RFC}}+{{Client.Cliente_Moroso}}+{{valor}}" class="btn btn-success">Seleccionar</a></td>
     </tr>
     {% empty %}
     <tr>
