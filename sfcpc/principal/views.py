@@ -310,5 +310,15 @@ def v_Reporte_Facturas(request,FechaInicio,FechaFinal,Status):
 
 	return render_to_response("Reporte_Facturas.html", {"Facturas":Facturas} , context_instance = RequestContext(request))
 
-def v_Reporte_Estado(request):
-	return render_to_response("Reporte_Estado.html" , context_instance = RequestContext(request))
+def v_Reporte_Estado(request,id_Cliente):
+	Facturas = Clientes.objects.raw("Select C.Clave_Cliente, C.RFC, F.Numero_Factura, C.Clave_Cliente, Fecha_Hora, Monto, Saldo, CASE F.Status WHEN 'C' THEN 'Cancelada' WHEN 'L' THEN 'Liquidada' WHEN 'P' THEN 'Pendiente' END as Estatus FROM principal_Factura F INNER JOIN principal_Clientes C ON C.Clave_Cliente= F.Clave_Cliente_id WHERE Clave_Cliente_id= '"+id_Cliente+"'")
+	Total= Factura.objects.raw("SELECT Numero_Factura, SUM(Saldo)-SUM(Monto) AS Total FROM principal_factura WHERE Clave_Cliente_id = 1")
+	return render_to_response("Reporte_Estado.html", {"Facturas":Facturas,"Total":Total}, context_instance = RequestContext(request))
+
+
+def v_Seleccionar_ClienteReporte(request,Nombre_Cliente,RFC_Cliente):
+	if Nombre_Cliente =='null' and RFC_Cliente == 'null':
+		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE Activo = 1")
+	else:
+		Cliente = Clientes.objects.raw("Select * FROM principal_clientes WHERE (Nombres LIKE '"'%%%%'+str(Nombre_Cliente)+'%%%%'"' OR RFC LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"') AND Activo = 1")
+	return render_to_response("Seleccionar_ClienteReportes.html" ,{"Cliente":Cliente}, context_instance = RequestContext(request))
