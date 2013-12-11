@@ -109,3 +109,20 @@ class PagosForm(forms.ModelForm):
 class Estado_CiudadForm(forms.ModelForm):
 	class Meta:
 		model = Estado_Ciudad
+        
+class Dolar_pesoForm(forms.ModelForm):
+    class Meta:
+        model = Dolar_peso
+
+    def __init__(self, *args, **kwargs):
+        super(Dolar_pesoForm, self).__init__(*args, **kwargs)
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['fecha'].widget.attrs['readonly'] = True
+
+    def clean_fecha(self):
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            return instance.fecha
+        else:
+            return self.cleaned_data['fecha']

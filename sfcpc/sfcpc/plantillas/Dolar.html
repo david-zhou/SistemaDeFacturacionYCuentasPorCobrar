@@ -1,0 +1,18 @@
+{% extends "Base.html" %}
+
+{% block titulo %} Dolar  {% endblock titulo %}
+{%block DolarActivo%}active{%endblock DolarActivo%}
+{% block contenido %}
+<div class="containter" style="margin-left:30px; margin-top:20px" >
+
+ <form method = "post"> {% csrf_token %}
+	{{ formulario.as_p }}
+	<input type="submit" value = "Agregar" class="btn btn-primary" href = "/">
+</form>
+
+
+
+
+
+</div>
+{% endblock contenido %}

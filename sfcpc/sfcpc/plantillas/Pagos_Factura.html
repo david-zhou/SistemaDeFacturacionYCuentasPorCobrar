@@ -5,9 +5,213 @@
 {% block contenidoPagos %}
 <div class="containter" style="margin-left:30px; margin-top:20px" >
 
-  Numero de Factura: <br><input type="text" name="Numero_Factura"><br>
-  Fecha: <br><input type="text" name="Fecha" value = "10/11/2013"><br>
-  Monto a pagar: <br><input type="text" name="Numero_Factura"><br>
-  <input type="submit" value = "Pagar" class="btn btn-primary">
+  Numero de factura:<br><input type="text" name="num" id="num"><br>
+  Facturas a pagar:<br>
+
+
+    <table class = "table table-striped" id = "tablota">
+	<thead>
+		<tr>
+			<th>Numero de Factura</th>
+			<th>Nombre Cliente</th>
+			<th>Fecha generada</th>
+			<th>Fecha limite</th>
+			<th>Abonos</th>
+			<th>Deudas</th>
+			<th>Total de la factura</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+  {% for C in Cliente %}
+		<tr>
+			<td> {{C.Numero_Factura}}</td>
+			<td> {{C.Nombres}}</td>
+			<td> {{C.Fecha}}</td>
+			<td> {{C.Fecha_Limite}}</td>
+			<td> {{C.Saldo}}</td>
+			<td> {{C.Deudas}}</td>
+			<td> {{C.Monto}}</td>
+			<td> 
+
+			<div id="example" class="modal hide fade in" style="display: none; ">
+			
+			<div class="modal-header">  
+    <a class="close" data-dismiss="modal">×</a>  
+  <h3>Pagar</h3>  
+</div>  
+<div class="modal-body">  
+<form id = "formitaps">
+  Abono:<br><input type="text" name="Producto" id="abono" pattern="[0-9]+([\.|,][0-9]+)?" step="0.01"><br>
+</form>
+  <fieldset disabled>
+    <div class="form-group">
+      <label for="disabledTextInput">Dolar:</label>
+      <input type="text" id="disabledTextInput" class="form-control" placeholder="{{M.0.valor}}">
+    </div>
+    </fieldset>
+<div class="radio">
+  <label>
+    <input type="radio" name="Moneda" id="P" value="P" checked="checked">
+    Pesos
+  </label>
 </div>
+<div class="radio">
+  <label>
+    <input type="radio" name="Moneda" id="D" value="D">
+    Dolares
+  </label>
+</div>
+
+   <table class = "table table-striped" id ="tabla">
+  <thead>
+    <tr>
+      <th>Cliente RFC</th>
+      <th>Clave factura</th>
+      <th>Abono</th>
+      <th>Monto</th>
+      <th>Deuda</th>
+      <th></th>
+    </tr>
+  </thead>
+<tbody>
+
+<tr>
+    <td>{{C.RFC}}</td>
+	<td>{{C.Numero_Factura}}</td>
+	<td>{{C.Saldo}}</td>
+	<td>{{C.Monto}}</td>
+	<td>{{C.Deudas}}</td>
+</tr>
+
+</tbody>
+</table>               
+
+</div>  
+<div class="modal-footer">  
+  <a onClick="link()" class="btn btn-success">Pagar</a>  
+  <a href="#" class="btn" data-dismiss="modal">Cerrar</a>  
+</div>  
+</div>  
+  <a data-toggle="modal" href="#example" class="btn btn-success">Pagar</a>
+
+
+			</td>
+
+	<td> 
+
+			<div id="examplee" class="modal hide fade in" style="display: none; ">
+			
+			<div class="modal-header">  
+    <a class="close" data-dismiss="modal">×</a>  
+  <h3>Cancelar Factura</h3>  
+</div>  
+<h4 align = "center">Seguro que desea cancelar la factura</h4>
+<div class="modal-body">  
+   <table class = "table table-striped" id ="tabla2">
+  <thead>
+    <tr>
+      <th>Cliente RFC</th>
+      <th>Clave factura</th>
+      <th>Abono</th>
+      <th>Monto</th>
+      <th>Deuda</th>
+      <th></th>
+    </tr>
+  </thead>
+<tbody>
+
+<tr>
+    <td>{{C.RFC}}</td>
+	<td>{{C.Numero_Factura}}</td>
+	<td>{{C.Saldo}}</td>
+	<td>{{C.Monto}}</td>
+	<td>{{C.Deudas}}</td>
+</tr>
+
+</tbody>
+</table>               
+
+</div>  
+<div class="modal-footer">  
+  <a onClick="link3()" class="btn btn-success">Cancelar Factura</a>  
+  <a href="#" class="btn" data-dismiss="modal">Cerrar</a>  
+</div>  
+</div>  
+  <a data-toggle="modal" href="#examplee" class="btn btn-danger">Cancelar</a>
+
+
+</td>
+		</tr>
+
+  {% empty %}
+    <tr>
+      <td colspan = "5"> No se encontro ninguna factura. </td>
+    </tr>
+  {% endfor %}
+	</tbody>
+	</table>
+			
+
+
+<a class="btn btn-primary" onClick="link2()">Buscar Factura</a>
+</div>
+<script type="text/javascript">
+function link()
+{
+  //var rfc = document.getElementById('RFC').value;
+  var pago = document.getElementById('abono').value;
+  var pagoo = document.getElementById('abono');
+  var tabla = document.getElementById('tabla');
+  var rfctabla = tabla.rows[1].cells[0].innerHTML;
+  var saldo = tabla.rows[1].cells[2].innerHTML;
+  var num = document.getElementById('num').value;
+  var numf = tabla.rows[1].cells[1].innerHTML;
+  var monto = tabla.rows[1].cells[3].innerHTML;
+  var Peso = document.getElementById('P');
+  //var Dolar = document.getElementById('D');  
+  var forma = document.getElementById('formitaps');
+
+
+
+
+  /*if(!rfc && !pago)
+  {
+  window.location.href='null+null+null+null+null';
+  }
+  else */
+ if(pago && monto != 'None' && forma.checkValidity())//pagando una factura
+  {
+  	if(Peso.checked)
+  	{
+  	window.location.href= numf+'+'+pago+'+'+numf+'+'+monto+'+P+'+saldo;
+  	}
+  	else
+  	{
+  	window.location.href= numf+'+'+pago+'+'+numf+'+'+monto+'+'+{{M.0.valor}}+'+'+saldo;
+  	}
+  }
+
+  
+  
+
+}
+function link3()
+{
+	//"Pagos_Clientes/{{C.RFC}}+null+{{C.Numero_Factura}}+null+C+null"
+	var rfctabla2 = tabla2.rows[1].cells[0].innerHTML;
+	var num2 = tabla2.rows[1].cells[1].innerHTML;
+
+	window.location.href = rfctabla2+'+0+'+num2+'+null+C+null';
+
+}
+function link2()
+{
+	var rfc = document.getElementById('num').value;
+	if(rfc)
+	{
+		window.location.href=rfc+'+null+null+null+null+null';
+	}
+}
+</script>
 {% endblock contenidoPagos %}

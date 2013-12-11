@@ -14,10 +14,17 @@ from principal.models import Detalle_Factura
 from principal.models import Pagos
 from principal.models import Estado_Ciudad
 from principal.forms import Estado_CiudadForm
+from principal.forms import Dolar_pesoForm
 from principal.models import Clientes
+from django.db.models import F
+from decimal import Decimal
+from django.db import connection, transaction
 from datetime import datetime
 
 def v_index(request):
+	cursor = connection.cursor()
+	cursor.execute("Update principal_clientes SET Cliente_Moroso = 1 WHERE RFC in (Select C.RFC FROM (principal_factura AS F INNER JOIN principal_detalle_factura AS DF ON F.Numero_Factura = DF.Numero_Factura_id) INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id Where datetime(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') < datetime('now','utc'))")
+	transaction.commit_unless_managed()
 	return render_to_response("index.html" , context_instance = RequestContext(request))
 
 def v_Factura(request, id_Cliente, RFC_Cliente, Moroso, Dolar):
@@ -204,10 +211,85 @@ def v_Seleccionar_ProductoBaja(request,Nombre_Producto,Clave_Producto):
 	return render_to_response("Seleccionar_ProductoBaja.html", {"producto":p} , context_instance = RequestContext(request))
 
 def v_Pagos_Factura(request):
-	return render_to_response("Pagos_Factura.html" , context_instance = RequestContext(request))
+	M = Dolar_peso.objects.raw("Select * From principal_dolar_peso Order by Fecha desc")
+
+	if RFC_Cliente == 'null' and Pago == 'null' and NumF == 'null' and Monto == 'null' and Moneda == 'null':#cuando le das buscar sin poner nada
+		Cliente = Factura.objects.raw("Select C.RFC,SUM(F.Monto + F.Saldo) AS S, F.Numero_Factura,C.Nombres, date(F.Fecha_Hora) AS Fecha, date(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE F.Numero_Factura LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
+
+	elif RFC_Cliente != 'null' and Pago == 'null':#buscando cliente
+		Cliente = Factura.objects.raw("Select C.RFC,SUM(F.Monto + F.Saldo) AS S, F.Numero_Factura,C.Nombres, date(F.Fecha_Hora) AS Fecha, date(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE F.Numero_Factura LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
+		
+	elif  NumF != 'null' and Pago != 'null':#pagando factura
+		Cliente = Factura.objects.raw("Select C.RFC, SUM(F.Monto + F.Saldo) AS S, F.Numero_Factura,C.Nombres, date(F.Fecha_Hora) AS Fecha, date(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE F.Numero_Factura LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
+		#UPDATE principal_factura  SET Saldo = Saldo + 1 WHERE Numero_Factura = 1
+
+	
+		if Moneda == 'P':
+
+			Factura.objects.filter(Numero_Factura=NumF).update(Saldo=F('Saldo') + Pago)#añade la cantidad que abono con pesos
+
+			p = Pagos(Numero_Factura_id = NumF, Pago = Pago, Tipo_Cambio = "P")
+			p.save()
+		elif Moneda == 'C':
+			Factura.objects.filter(Numero_Factura=NumF).update(Status='C')
+		elif Moneda is not None :
+			Factura.objects.filter(Numero_Factura=NumF).update(Saldo=F('Saldo') + (float(Pago) * float(Moneda)))#añade la cantidad que abono con dolares
+			p = Pagos(Numero_Factura_id = NumF, Pago = Pago, Tipo_Cambio = "D")
+			p.save()
+	
+		Factura.objects.filter(Saldo__gte =F('Monto')).update(Status="L")#checa si esta terminada de pagar y si si le cambia el status a L
+	else:
+		Cliente = Factura.objects.raw("Select C.RFC, F.Numero_Factura,C.Nombres, datetime(F.Fecha_Hora) AS Fecha, datetime(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE F.Numero_Factura LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
+		
+
+	return render_to_response("Pagos_Factura.html" ,{"Cliente":Cliente, "M":M}, context_instance = RequestContext(request))
+
+def v_Dolar(request):
+	if request.method == "POST":
+		formulario = Dolar_pesoForm(request.POST)
+		if formulario.is_valid():
+			formulario.save()
+			return HttpResponseRedirect("/")
+	else:
+		formulario = Dolar_pesoForm()
+
+	return render_to_response("Dolar.html", {"formulario":formulario}, context_instance=RequestContext(request))
 
 def v_Pagos_Clientes(request):
-	return render_to_response("Pagos_Clientes.html" , context_instance = RequestContext(request))
+	#M = Dolar_peso.objects.get(fecha = '2013-12-08')
+	M = Dolar_peso.objects.raw("Select * From principal_dolar_peso Order by Fecha desc")
+
+	if RFC_Cliente == 'null' and Pago == 'null' and NumF == 'null' and Monto == 'null' and Moneda == 'null':#cuando le das buscar sin poner nada
+		Cliente = Factura.objects.raw("Select C.RFC,SUM(F.Monto + F.Saldo) AS S, F.Numero_Factura,C.Nombres, datetime(F.Fecha_Hora) AS Fecha, datetime(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE C.RFC LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
+		
+
+	elif RFC_Cliente != 'null' and Pago == -1:#buscando cliente
+		#Cliente = Factura.objects.raw("Select C.RFC,SUM(F.Monto + F.Saldo) AS S, F.Numero_Factura,C.Nombres, date(F.Fecha_Hora) AS Fecha, date(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE C.RFC LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P'")
+		
+
+		Cliente = Factura.objects.raw("Select * From principal_factura")
+	elif  NumF != 'null' and Pago != 'null':#pagando factura
+		Cliente = Factura.objects.raw("Select C.RFC, SUM(F.Monto + F.Saldo) AS S, F.Numero_Factura,C.Nombres, datetime(F.Fecha_Hora) AS Fecha, datetime(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE C.RFC LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
+		#UPDATE principal_factura  SET Saldo = Saldo + 1 WHERE Numero_Factura = 1
+
+		if Moneda == 'P':
+
+			Factura.objects.filter(Numero_Factura=NumF).update(Saldo=F('Saldo') + Pago)#añade la cantidad que abono con pesos
+
+		
+			p = Pagos(Numero_Factura_id = NumF, Pago = Pago, Tipo_Cambio = "P")
+			p.save()
+		elif Moneda == 'C':
+			Factura.objects.filter(Numero_Factura=NumF).update(Status='C')
+		elif Moneda is not None :
+			Factura.objects.filter(Numero_Factura=NumF).update(Saldo=F('Saldo') + (float(Pago) * float(Moneda)))#añade la cantidad que abono con dolares
+			p = Pagos(Numero_Factura_id = NumF, Pago = Pago, Tipo_Cambio = "D")
+			p.save()
+
+	else:
+		Cliente = Factura.objects.raw("Select C.RFC, F.Numero_Factura,C.Nombres, datetime(F.Fecha_Hora) AS Fecha, datetime(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE C.RFC LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
+		
+	return render_to_response("Pagos_Clientes.html" ,{"Cliente":Cliente, "M":M}, context_instance = RequestContext(request))
 
 def v_Reportes(request):
 	return render_to_response("Reportes.html" , context_instance = RequestContext(request))

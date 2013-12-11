@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+from datetime import datetime
 
 # Create your models here.
 class Producto(models.Model):
@@ -17,7 +19,7 @@ class Producto(models.Model):
 
 class Dolar_peso(models.Model):
     valor=models.FloatField()
-    fecha=models.DateTimeField(primary_key=True)
+    fecha=models.DateTimeField(("Fecha"), default=datetime.now, primary_key=True)
 
 class Estado_Ciudad(models.Model):
 	Clave_EstadoCiudad = models.AutoField(primary_key = True)
@@ -81,7 +83,7 @@ class Factura(models.Model):
 class Pagos(models.Model):
 	Clave_Pagos = models.AutoField(primary_key = True)
 	Numero_Factura = models.ForeignKey(Factura)
-	Fecha = models.DateTimeField()
+	Fecha = models.DateTimeField(default=timezone.now)
 	Pago = models.DecimalField(max_digits = 8, decimal_places = 2)
 	Pesos_Dolares = (
                 ('D','Dolar'),
