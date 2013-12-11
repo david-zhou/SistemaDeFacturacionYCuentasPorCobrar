@@ -4,6 +4,7 @@ from principal.models import Clientes
 from principal.models import Factura
 from principal.models import Pagos
 from principal.models import Estado_Ciudad
+from principal.models import Dolar_peso
 import re
 
 class ProductosForm(forms.ModelForm):
