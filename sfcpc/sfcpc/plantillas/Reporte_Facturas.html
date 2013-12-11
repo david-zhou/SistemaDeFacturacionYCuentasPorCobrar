@@ -11,7 +11,7 @@ function displayResult(estatus)
 document.getElementById("result").value=estatus
 }
 </script>
-<script language="javascript" type="text/javascript" src="datetimepicker.js">
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}js/datetimepicker.js">
 </script>
 
 </head>
@@ -28,10 +28,10 @@ document.getElementById("result").value=estatus
 
 
 <br>
-Fecha de inicio:<br><input type="date" name="FechaInicio" id="FechaInicio"><br>
-Fecha final:<br><input type="date" name="FechaFinal" id="FechaFinal"><br>
-Calis:<br>
-<input id="demo1" type="text" size="25"><a href="javascript:NewCal('demo1','ddmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br>
+Fecha de Inicio:<br>
+<input id="FechaInicio" type="text" size="25"><a href="javascript:NewCal('FechaInicio','ddmmyyyy')"><img src="{{STATIC_URL}}img/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br>
+Fecha Final:<br>
+<input id="FechaFinal" type="text" size="25"><a href="javascript:NewCal('FechaFinal','ddmmyyyy')"><img src="{{STATIC_URL}}img/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br>
    <table class = "table table-striped">
   <thead>
     <tr>
