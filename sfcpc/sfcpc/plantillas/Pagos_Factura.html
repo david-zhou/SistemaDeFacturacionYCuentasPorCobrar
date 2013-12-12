@@ -13,30 +13,92 @@
 	<thead>
 		<tr>
 			<th>Numero de Factura</th>
+      <th>Cliente RFC</th>
 			<th>Nombre Cliente</th>
 			<th>Fecha generada</th>
 			<th>Fecha limite</th>
 			<th>Abonos</th>
-			<th>Deudas</th>
+			<th>Adeudo</th>
 			<th>Total de la factura</th>
-			<th></th>
+
 		</tr>
 	</thead>
 	<tbody>
   {% for C in Cliente %}
 		<tr>
 			<td> {{C.Numero_Factura}}</td>
+      <td>{{C.RFC}}</td>
 			<td> {{C.Nombres}}</td>
 			<td> {{C.Fecha}}</td>
 			<td> {{C.Fecha_Limite}}</td>
 			<td> {{C.Saldo}}</td>
 			<td> {{C.Deudas}}</td>
 			<td> {{C.Monto}}</td>
-			<td> 
+			   <td>  <a  onClick="Pagar(this)" class="btn btn-success">Pagarrrr</a></td>
+      <td>  <a onClick="Cancelar(this)" class="btn btn-danger">Cancelar</a></td>
+		</tr>
 
-			<div id="example" class="modal hide fade in" style="display: none; ">
+  {% empty %}
+    <tr>
+      <td colspan = "5"> No se encontro ninguna factura. </td>
+    </tr>
+  {% endfor %}
+	</tbody>
+	</table>
 			
-			<div class="modal-header">  
+
+
+
+
+
+      <div id="examplee" class="modal hide fade in" style="display: none; ">
+      
+      <div class="modal-header">  
+    <a class="close" data-dismiss="modal">×</a>  
+  <h3>Cancelar Factura</h3>  
+</div>  
+<h4 align = "center">Seguro que desea cancelar la factura</h4>
+<div class="modal-body">  
+   <table class = "table table-striped" id ="tabla2">
+  <thead>
+    <tr>
+      <th>Cliente RFC</th>
+      <th>Clave factura</th>
+      <th>Abono</th>
+      <th>Monto</th>
+      <th>Adeudo</th>
+      <th></th>
+    </tr>
+  </thead>
+<tbody>
+
+<tr>
+    <td>{{C.RFC}}</td>
+  <td>{{C.Numero_Factura}}</td>
+  <td>{{C.Saldo}}</td>
+  <td>{{C.Monto}}</td>
+  <td>{{C.Deudas}}</td>
+</tr>
+
+</tbody>
+</table>               
+
+</div>  
+<div class="modal-footer">  
+  <a onClick="link3()" class="btn btn-success">Cancelar Factura</a>  
+  <a href="#" class="btn" data-dismiss="modal">Cerrar</a>  
+</div>  
+</div>  
+
+
+
+
+
+
+
+      <div id="example" class="modal hide fade in" style="display: none; ">
+      
+      <div class="modal-header">  
     <a class="close" data-dismiss="modal">×</a>  
   <h3>Pagar</h3>  
 </div>  
@@ -70,7 +132,7 @@
       <th>Clave factura</th>
       <th>Abono</th>
       <th>Monto</th>
-      <th>Deuda</th>
+      <th>Adeudo</th>
       <th></th>
     </tr>
   </thead>
@@ -78,10 +140,10 @@
 
 <tr>
     <td>{{C.RFC}}</td>
-	<td>{{C.Numero_Factura}}</td>
-	<td>{{C.Saldo}}</td>
-	<td>{{C.Monto}}</td>
-	<td>{{C.Deudas}}</td>
+  <td>{{C.Numero_Factura}}</td>
+  <td>{{C.Saldo}}</td>
+  <td>{{C.Monto}}</td>
+  <td>{{C.Deudas}}</td>
 </tr>
 
 </tbody>
@@ -93,65 +155,7 @@
   <a href="#" class="btn" data-dismiss="modal">Cerrar</a>  
 </div>  
 </div>  
-  <a data-toggle="modal" href="#example" class="btn btn-success">Pagar</a>
 
-
-			</td>
-
-	<td> 
-
-			<div id="examplee" class="modal hide fade in" style="display: none; ">
-			
-			<div class="modal-header">  
-    <a class="close" data-dismiss="modal">×</a>  
-  <h3>Cancelar Factura</h3>  
-</div>  
-<h4 align = "center">Seguro que desea cancelar la factura</h4>
-<div class="modal-body">  
-   <table class = "table table-striped" id ="tabla2">
-  <thead>
-    <tr>
-      <th>Cliente RFC</th>
-      <th>Clave factura</th>
-      <th>Abono</th>
-      <th>Monto</th>
-      <th>Deuda</th>
-      <th></th>
-    </tr>
-  </thead>
-<tbody>
-
-<tr>
-    <td>{{C.RFC}}</td>
-	<td>{{C.Numero_Factura}}</td>
-	<td>{{C.Saldo}}</td>
-	<td>{{C.Monto}}</td>
-	<td>{{C.Deudas}}</td>
-</tr>
-
-</tbody>
-</table>               
-
-</div>  
-<div class="modal-footer">  
-  <a onClick="link3()" class="btn btn-success">Cancelar Factura</a>  
-  <a href="#" class="btn" data-dismiss="modal">Cerrar</a>  
-</div>  
-</div>  
-  <a data-toggle="modal" href="#examplee" class="btn btn-danger">Cancelar</a>
-
-
-</td>
-		</tr>
-
-  {% empty %}
-    <tr>
-      <td colspan = "5"> No se encontro ninguna factura. </td>
-    </tr>
-  {% endfor %}
-	</tbody>
-	</table>
-			
 
 
 <a class="btn btn-primary" onClick="link2()">Buscar Factura</a>
@@ -178,17 +182,21 @@ function link()
   /*if(!rfc && !pago)
   {
   window.location.href='null+null+null+null+null';
-  }
+  }   window.location.href= rfctabla+'+'+pagoo+'+'+parseInt(num)+'+'+parseFloat(monto)+'+P+'+parseFloat(saldo);
+    }
+    else
+    {
+    window.location.href= rfctabla+'+'+pagoo+'+'+parseInt(num)+'+'+parseFloat(monto)+'+'+parseFloat({{M.0.valor}});+'+'+parseFloat(saldo);
   else */
  if(pago && monto != 'None' && forma.checkValidity())//pagando una factura
   {
   	if(Peso.checked)
   	{
-  	window.location.href= numf+'+'+pago+'+'+numf+'+'+monto+'+P+'+saldo;
+  	window.location.href= parseInt(numf)+'+'+pago+'+'+parseInt(numf)+'+'+parseFloat(monto)+'+P+'+saldo;
   	}
   	else
   	{
-  	window.location.href= numf+'+'+pago+'+'+numf+'+'+monto+'+'+{{M.0.valor}}+'+'+saldo;
+  	window.location.href= parseInt(numf)+'+'+pago+'+'+parseInt(numf)+'+'+parseFloat(monto)+'+'+parseFloat({{M.0.valor}})+'+'+parseFloat(saldo);
   	}
   }
 
@@ -202,7 +210,7 @@ function link3()
 	var rfctabla2 = tabla2.rows[1].cells[0].innerHTML;
 	var num2 = tabla2.rows[1].cells[1].innerHTML;
 
-	window.location.href = rfctabla2+'+0+'+num2+'+null+C+null';
+	window.location.href = rfctabla2+'+0+'+parseInt(num2)+'+null+C+null';
 
 }
 function link2()
@@ -212,6 +220,66 @@ function link2()
 	{
 		window.location.href=rfc+'+null+null+null+null+null';
 	}
+  else
+  {
+    window.location.href='null+null+null+null+null+null';
+  }
+}
+var rowCambio = 0;
+
+
+function Pagar (posicion) {
+   var tableFactura=document.getElementById("tablota");
+   var rowIndex = posicion.parentNode.parentNode.rowIndex;
+
+
+   rowCambio = rowIndex;
+    $('#example').modal('show');
+
+    var tabla = document.getElementById('tabla');
+     for (var x=tabla.rows.length-1; x>0; x--) {
+    tabla.deleteRow(x);
+  }
+    var row = tabla.insertRow(-1);
+    var cellRFC=row.insertCell(0);
+    var cellClave_Factura=row.insertCell(1);
+    var cellAbono=row.insertCell(2);
+    var cellMonto=row.insertCell(3);
+    var cellDeuda=row.insertCell(4);
+
+    cellRFC.innerHTML = tableFactura.rows[rowIndex].cells[1].innerHTML;
+    cellClave_Factura.innerHTML = tableFactura.rows[rowIndex].cells[0].innerHTML;
+    cellAbono.innerHTML = tableFactura.rows[rowIndex].cells[5].innerHTML;
+    cellMonto.innerHTML = tableFactura.rows[rowIndex].cells[7].innerHTML;
+    cellDeuda.innerHTML = tableFactura.rows[rowIndex].cells[6].innerHTML;
+
+}
+
+function Cancelar (posicion) {
+   var tableFactura=document.getElementById("tablota");
+   var rowIndex = posicion.parentNode.parentNode.rowIndex;
+
+
+   rowCambio = rowIndex;
+    $('#examplee').modal('show');
+
+    var tabla = document.getElementById('tabla2');
+     for (var x=tabla.rows.length-1; x>0; x--) {
+    tabla.deleteRow(x);
+  }
+    var row = tabla.insertRow(-1);
+    var cellRFC=row.insertCell(0);
+    var cellClave_Factura=row.insertCell(1);
+    var cellAbono=row.insertCell(2);
+    var cellMonto=row.insertCell(3);
+    var cellDeuda=row.insertCell(4);
+
+    cellRFC.innerHTML = tableFactura.rows[rowIndex].cells[1].innerHTML;
+    cellClave_Factura.innerHTML = tableFactura.rows[rowIndex].cells[0].innerHTML;
+    cellAbono.innerHTML = tableFactura.rows[rowIndex].cells[5].innerHTML;
+    cellMonto.innerHTML = tableFactura.rows[rowIndex].cells[7].innerHTML;
+    cellDeuda.innerHTML = tableFactura.rows[rowIndex].cells[6].innerHTML;
+
 }
 </script>
 {% endblock contenidoPagos %}

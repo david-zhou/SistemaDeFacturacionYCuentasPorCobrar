@@ -213,20 +213,28 @@ def v_Seleccionar_ProductoBaja(request,Nombre_Producto,Clave_Producto):
 def v_Pagos_Factura(request, RFC_Cliente, Pago, NumF, Monto, Moneda, Saldo):
 	M = Dolar_peso.objects.raw("Select * From principal_dolar_peso Order by Fecha desc")
 
-	if RFC_Cliente == 'null' and Pago == 'null' and NumF == 'null' and Monto == 'null' and Moneda == 'null':#cuando le das buscar sin poner nada
-		Cliente = Factura.objects.raw("Select C.RFC,SUM(F.Monto + F.Saldo) AS S, F.Numero_Factura,C.Nombres, date(F.Fecha_Hora) AS Fecha, date(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE F.Numero_Factura LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
+
+	if Monto != None and Monto != 'null':
+		Factura.objects.filter(Saldo__gte = F(Monto)).update(Saldo = Monto)
+
+	if RFC_Cliente == 'null' and Pago == 'null' and NumF == 'null' and Monto == 'null' and Moneda == 'null' and Saldo == 'null':#cuando le das buscar sin poner nada
+		Cliente = Factura.objects.raw("Select C.RFC, F.Numero_Factura,C.Nombres, date(F.Fecha_Hora) AS Fecha, date(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE F.Status = 'P' and C.Cliente_Moroso = '0'")
 
 	elif RFC_Cliente != 'null' and Pago == 'null':#buscando cliente
-		Cliente = Factura.objects.raw("Select C.RFC,SUM(F.Monto + F.Saldo) AS S, F.Numero_Factura,C.Nombres, date(F.Fecha_Hora) AS Fecha, date(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE F.Numero_Factura LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
+		Cliente = Factura.objects.raw("Select C.RFC, F.Numero_Factura,C.Nombres, date(F.Fecha_Hora) AS Fecha, date(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE F.Numero_Factura LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
 		
 	elif  NumF != 'null' and Pago != 'null':#pagando factura
-		Cliente = Factura.objects.raw("Select C.RFC, SUM(F.Monto + F.Saldo) AS S, F.Numero_Factura,C.Nombres, date(F.Fecha_Hora) AS Fecha, date(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE F.Numero_Factura LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
+		Factura.objects.filter(Saldo__gte =F('Monto')).update(Status="L")#checa si esta terminada de pagar y si si le cambia el status a L
+		
+		
+		Cliente = Factura.objects.raw("Select C.RFC, F.Numero_Factura,C.Nombres, date(F.Fecha_Hora) AS Fecha, date(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE F.Numero_Factura LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
 		#UPDATE principal_factura  SET Saldo = Saldo + 1 WHERE Numero_Factura = 1
 
 	
 		if Moneda == 'P':
 
 			Factura.objects.filter(Numero_Factura=NumF).update(Saldo=F('Saldo') + Pago)#añade la cantidad que abono con pesos
+			Factura.objects.filter(Saldo__gte = F(Monto)).update(Saldo = float( F(Monto)))
 
 			p = Pagos(Numero_Factura_id = NumF, Pago = Pago, Tipo_Cambio = "P")
 			p.save()
@@ -238,6 +246,7 @@ def v_Pagos_Factura(request, RFC_Cliente, Pago, NumF, Monto, Moneda, Saldo):
 			p.save()
 	
 		Factura.objects.filter(Saldo__gte =F('Monto')).update(Status="L")#checa si esta terminada de pagar y si si le cambia el status a L
+	
 	else:
 		Cliente = Factura.objects.raw("Select C.RFC, F.Numero_Factura,C.Nombres, datetime(F.Fecha_Hora) AS Fecha, datetime(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE F.Numero_Factura LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
 		
@@ -258,9 +267,10 @@ def v_Dolar(request):
 def v_Pagos_Clientes(request, RFC_Cliente, Pago, NumF, Monto, Moneda, Saldo):
 	#M = Dolar_peso.objects.get(fecha = '2013-12-08')
 	M = Dolar_peso.objects.raw("Select * From principal_dolar_peso Order by Fecha desc")
-
-	if RFC_Cliente == 'null' and Pago == 'null' and NumF == 'null' and Monto == 'null' and Moneda == 'null':#cuando le das buscar sin poner nada
-		Cliente = Factura.objects.raw("Select C.RFC,SUM(F.Monto + F.Saldo) AS S, F.Numero_Factura,C.Nombres, datetime(F.Fecha_Hora) AS Fecha, datetime(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE C.RFC LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
+	Factura.objects.filter(Saldo__gte = F('Monto')).update(Saldo = F('Monto'))
+	
+	if RFC_Cliente == 'null' and Pago == 'null' and NumF == 'null' and Monto == 'null' and Moneda == 'null' and Saldo == 'null':#cuando le das buscar sin poner nada
+		Cliente = Factura.objects.raw("Select C.RFC, F.Numero_Factura,C.Nombres, datetime(F.Fecha_Hora) AS Fecha, datetime(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE F.Status = 'P' and C.Cliente_Moroso = '0'")
 		
 
 	elif RFC_Cliente != 'null' and Pago == -1:#buscando cliente
@@ -269,7 +279,11 @@ def v_Pagos_Clientes(request, RFC_Cliente, Pago, NumF, Monto, Moneda, Saldo):
 
 		Cliente = Factura.objects.raw("Select * From principal_factura")
 	elif  NumF != 'null' and Pago != 'null':#pagando factura
-		Cliente = Factura.objects.raw("Select C.RFC, SUM(F.Monto + F.Saldo) AS S, F.Numero_Factura,C.Nombres, datetime(F.Fecha_Hora) AS Fecha, datetime(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE C.RFC LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
+		Factura.objects.filter(Saldo__gte =F('Monto')).update(Status="L")#checa si esta terminada de pagar y si si le cambia el status a L
+		
+
+
+		Cliente = Factura.objects.raw("Select C.RFC, F.Numero_Factura,C.Nombres, datetime(F.Fecha_Hora) AS Fecha, datetime(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE C.RFC LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
 		#UPDATE principal_factura  SET Saldo = Saldo + 1 WHERE Numero_Factura = 1
 
 		if Moneda == 'P':
@@ -286,6 +300,8 @@ def v_Pagos_Clientes(request, RFC_Cliente, Pago, NumF, Monto, Moneda, Saldo):
 			p = Pagos(Numero_Factura_id = NumF, Pago = Pago, Tipo_Cambio = "D")
 			p.save()
 
+		Factura.objects.filter(Saldo__gte =F('Monto')).update(Status="L")#checa si esta terminada de pagar y si si le cambia el status a L
+	
 	else:
 		Cliente = Factura.objects.raw("Select C.RFC, F.Numero_Factura,C.Nombres, datetime(F.Fecha_Hora) AS Fecha, datetime(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE C.RFC LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
 		

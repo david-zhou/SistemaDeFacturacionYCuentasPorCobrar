@@ -20,8 +20,11 @@ urlpatterns = patterns('',
     url(r'^Productos_Cambio/(?P<id_Producto>\d+)$', 'principal.views.v_Productos_Cambio'),
     url(r'^Seleccionar_Producto/(?P<Nombre_Producto>\w+)?\+?(?P<Clave_Producto>\w+)?','principal.views.v_Seleccionar_Producto'),
     url(r'^Seleccionar_ProductoBaja/(?P<Nombre_Producto>\w+)?\+?(?P<Clave_Producto>\w+)?','principal.views.v_Seleccionar_ProductoBaja'),
-    url(r'^Pagos_Factura/(?P<RFC_Cliente>\w+)?\+?(?P<Pago>[\w.]+)?\+?(?P<NumF>\w+)?\+?(?P<Monto>\w+)?\+?(?P<Moneda>[\w.]+)?\+?(?P<Saldo>\w+)?','principal.views.v_Pagos_Factura'),
-    url(r'^Pagos_Clientes/(?P<RFC_Cliente>\w+)?\+?(?P<Pago>[\w.]+)?\+?(?P<NumF>\w+)?\+?(?P<Monto>\w+)?\+?(?P<Moneda>[\w.]+)?\+?(?P<Saldo>\w+)?','principal.views.v_Pagos_Clientes'),
+    
+    url(r'^Pagos_Factura/(?P<RFC_Cliente>\w+)?\+?(?P<Pago>[\w.]+)?\+?(?P<NumF>\w+)?\+?(?P<Monto>[\w.]+)?\+?(?P<Moneda>[\w.]+)?\+?(?P<Saldo>\w+)?','principal.views.v_Pagos_Factura'),
+    
+    url(r'^Pagos_Clientes/(?P<RFC_Cliente>\w+)?\+?(?P<Pago>[\w.]+)?\+?(?P<NumF>\w+)?\+?(?P<Monto>[\w.]+)?\+?(?P<Moneda>[\w.]+)?\+?(?P<Saldo>\w+)?','principal.views.v_Pagos_Clientes'),
+    
     url(r'^Agregar_Estado_Ciudad/$', 'principal.views.v_Agregar_Estado_Ciudad'),
     url(r'^Seleccionar_ClienteFacturacion/(?P<Nombre_Cliente>\w+)?\+?(?P<RFC_Cliente>\w+)?$','principal.views.v_Seleccionar_ClienteFacturacion'),
     url(r'^Reportes/$', 'principal.views.v_Reportes'),
