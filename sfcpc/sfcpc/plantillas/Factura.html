@@ -92,7 +92,7 @@ document.getElementById("clienteTextBox").innerHTML=rfc;
 
 <div  style="float: right; margin-right:190px">
   <label style="font-size:16pt; display:inline-block;">Subtotal:</label> <label id="subtotal" style="font-size:20pt; color:green; display:inline-block;">$ 0.00</label><br>
-  <label style="font-size:16pt; display:inline-block;">Pago:&nbsp&nbsp&nbsp&nbsp</label><input type="text" name="Pago" id="pagoTextBox" style="font-size:20pt; color:green; display:inline-block;height:30px"><br>
+  <label style="font-size:16pt; display:inline-block;">Pago:&nbsp&nbsp&nbsp&nbsp</label><form id="formaPago" style="display:inline-block;"><input pattern="[0-9]+([\.|,][0-9]+)?" type="text" name="Pago" id="pagoTextBox" style="font-size:20pt; color:green; display:inline-block;height:30px"></form><br>
 
 
 
@@ -129,7 +129,12 @@ function generarFactura()
     alert("Ingrese productos primero");
     return;
   }
-
+  var forma = document.getElementById("formaPago");
+  if(!forma.checkValidity())
+  {
+    alert("Pago invalido");
+    return;
+  }
   var arreglo = new Array();
   arreglo[0]="{{id_Cliente}}"; // id cliente
   arreglo[1]=document.getElementById("subtotal").innerHTML; // monto
