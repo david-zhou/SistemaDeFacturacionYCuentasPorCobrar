@@ -214,8 +214,8 @@ def v_Pagos_Factura(request, RFC_Cliente, Pago, NumF, Monto, Moneda, Saldo):
 	M = Dolar_peso.objects.raw("Select * From principal_dolar_peso Order by Fecha desc")
 
 
-	if Monto != None and Monto != 'null':
-		Factura.objects.filter(Saldo__gte = F(Monto)).update(Saldo = Monto)
+	#if Monto != None and Monto != 'null':
+	
 
 	if RFC_Cliente == 'null' and Pago == 'null' and NumF == 'null' and Monto == 'null' and Moneda == 'null' and Saldo == 'null':#cuando le das buscar sin poner nada
 		Cliente = Factura.objects.raw("Select C.RFC, F.Numero_Factura,C.Nombres, date(F.Fecha_Hora) AS Fecha, date(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE F.Status = 'P' and C.Cliente_Moroso = '0'")
@@ -226,6 +226,7 @@ def v_Pagos_Factura(request, RFC_Cliente, Pago, NumF, Monto, Moneda, Saldo):
 	elif  NumF != 'null' and Pago != 'null':#pagando factura
 		Factura.objects.filter(Saldo__gte =F('Monto')).update(Status="L")#checa si esta terminada de pagar y si si le cambia el status a L
 		
+	#	Factura.objects.filter(Saldo__gte = F('Monto')).update(Saldo = F('Monto'))
 		
 		Cliente = Factura.objects.raw("Select C.RFC, F.Numero_Factura,C.Nombres, date(F.Fecha_Hora) AS Fecha, date(F.Fecha_Hora,'+' || (C.Limite_Credito) || ' day') AS Fecha_Limite, F.Saldo, (F.Monto - F.Saldo) AS Deudas FROM principal_factura AS F INNER JOIN principal_clientes AS C ON C.Clave_Cliente = F.Clave_Cliente_id WHERE F.Numero_Factura LIKE '"'%%%%'+str(RFC_Cliente)+'%%%%'"' and F.Status = 'P' and C.Cliente_Moroso = '0'")
 		#UPDATE principal_factura  SET Saldo = Saldo + 1 WHERE Numero_Factura = 1
@@ -234,7 +235,7 @@ def v_Pagos_Factura(request, RFC_Cliente, Pago, NumF, Monto, Moneda, Saldo):
 		if Moneda == 'P':
 
 			Factura.objects.filter(Numero_Factura=NumF).update(Saldo=F('Saldo') + Pago)#añade la cantidad que abono con pesos
-			Factura.objects.filter(Saldo__gte = F(Monto)).update(Saldo = float( F(Monto)))
+			Factura.objects.filter(Saldo__gte = F('Monto')).update(Saldo = F('Monto'))
 
 			p = Pagos(Numero_Factura_id = NumF, Pago = Pago, Tipo_Cambio = "P")
 			p.save()
@@ -289,7 +290,7 @@ def v_Pagos_Clientes(request, RFC_Cliente, Pago, NumF, Monto, Moneda, Saldo):
 		if Moneda == 'P':
 
 			Factura.objects.filter(Numero_Factura=NumF).update(Saldo=F('Saldo') + Pago)#añade la cantidad que abono con pesos
-
+			Factura.objects.filter(Saldo__gte = F('Monto')).update(Saldo = F('Monto'))
 		
 			p = Pagos(Numero_Factura_id = NumF, Pago = Pago, Tipo_Cambio = "P")
 			p.save()
